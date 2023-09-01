@@ -1,4 +1,4 @@
-# vs-picgo
+# vs-piclist
 
 > The VSCode extension of [PicList](https://github.com/Kuingsmile/PicList).
 
