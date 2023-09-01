@@ -1,3 +1,12 @@
+## :tada: 1.0.2 (2023-09-01)
+
+
+### :pencil: Documentation
+
+* **custom:** update readme ([a2c977a](https://github.com/Kuingsmile/vs-piclist/commit/a2c977a))
+
+
+
 ## :tada: 1.0.1 (2023-09-01)
 
 
