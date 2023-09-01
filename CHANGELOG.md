@@ -1,3 +1,12 @@
+# :tada: 1.1.0 (2023-09-01)
+
+
+### :sparkles: Features
+
+* **custom:** support drag and drop, support multiple delete, support open image db ([630a4f3](https://github.com/Kuingsmile/vs-piclist/commit/630a4f3))
+
+
+
 ## :tada: 1.0.2 (2023-09-01)
 
 

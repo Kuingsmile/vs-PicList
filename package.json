@@ -17,7 +17,7 @@
     "piclist"
   ],
   "icon": "logo.png",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "publisher": "Kuingsmile",
   "engines": {
     "vscode": "^1.81.0"
