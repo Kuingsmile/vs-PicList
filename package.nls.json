@@ -1,0 +1,18 @@
+{
+  "ext.displayName": "PicList",
+  "ext.description": "A powerful image uploading and managing plugin for VSCode based on PicList desktop software. Compatible with PicGo.",
+  "command.upload.clipboard.title": "Upload from clipboard",
+  "command.upload.explorer.title": "Upload from explorer",
+  "command.upload.inputBox.title": "Upload from input path or url",
+  "command.delete.title": "Delete Image by PicList",
+  "config.title": "PicList",
+  "config.uploadAPIUrl.description": "Upload API URL, default is `http://127.0.0.1:36677/upload`",
+  "config.deleteAPIUrl.description": "Delete API URL, default is `http://127.0.0.1:36677/delete`",
+  "config.copyType.markdown": "Markdown: ![alt](url)",
+  "config.copyType.html": "HTML: <img src=\"url\" alt=\"alt\" />",
+  "config.copyType.url": "URL: url",
+  "config.copyType.ubb": "UBB: [img]url[/img]",
+  "config.copyType.custom": "Custom",
+  "config.customType.description": "Custom copy type, default is `Markdown: ![$fileName]($url)`, support `$fileName`, `$url`",
+  "config.encodeUrl.description": "Whether to encode the URL, default is `false`"
+}

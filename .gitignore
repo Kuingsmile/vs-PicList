@@ -1,0 +1,15 @@
+node_modules/
+out
+node_modules
+.vscode-test/
+*.vsix
+.imgs
+yarn-error.log
+package-lock.json
+coverage
+.coveralls.yml
+.DS_Store
+dist
+tmp
+assets/test.md
+*.zip

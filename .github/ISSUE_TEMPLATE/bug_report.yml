@@ -1,0 +1,37 @@
+name: "🐛 Bug Report"
+description: 提交一个问题 / Report a bug
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - Kuingsmile
+body:
+  - type: markdown
+    attributes:
+      value: |+
+        ## VS-PicList Issue 模板
+
+        请依照该模板来提交，否则将会被关闭。
+        **提问之前请注意你看过文档以及那些被关闭的 issues。否则同样的提问也会被关闭！**
+
+        Please submit according to this template, otherwise it will be closed.
+        **Before asking a question, please note that you have read the Doc, and those closed issues. Otherwise the same question will also be closed! **
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 系统信息 | System Information
+      options:
+        - Windows
+        - Mac
+        - Mac(arm64)
+        - Linux
+        - All
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 问题重现 | Bug reproduce
+      description: 请复述Bug重现流程，必要时附图 | Please tell me the bug reproduction process, attach pictures if necessary
+    validations:
+      required: true

@@ -1,0 +1,193 @@
+{
+  "name": "vs-piclist",
+  "displayName": "%ext.displayName%",
+  "description": "%ext.description%",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kuingsmile/vs-piclist.git"
+  },
+  "issues": "https://github.com/Kuingsmile/vs-piclist/issues",
+  "keywords": [
+    "image",
+    "picture",
+    "upload",
+    "picgo",
+    "image upload",
+    "picture upload",
+    "piclist"
+  ],
+  "icon": "logo.png",
+  "version": "1.0.0",
+  "publisher": "Kuingsmile",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "piclist.uploadFromClipboard",
+        "title": "%command.upload.clipboard.title%",
+        "category": "PicList"
+      },
+      {
+        "command": "piclist.uploadFromExplorer",
+        "title": "%command.upload.explorer.title%",
+        "category": "PicList"
+      },
+      {
+        "command": "piclist.uploadFromInputBox",
+        "title": "%command.upload.inputBox.title%",
+        "category": "PicList"
+      },
+      {
+        "command": "piclist.deleteImage",
+        "title": "%command.delete.title%",
+        "category": "PicList"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "piclist.deleteImage",
+          "when": "editorTextFocus"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "piclist.uploadFromClipboard",
+        "key": "ctrl+alt+U",
+        "mac": "cmd+alt+U"
+      },
+      {
+        "command": "piclist.uploadFromExplorer",
+        "key": "ctrl+alt+E",
+        "mac": "cmd+alt+E"
+      },
+      {
+        "command": "piclist.uploadFromInputBox",
+        "key": "ctrl+alt+O",
+        "mac": "cmd+alt+O"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "%config.title%",
+      "properties": {
+        "piclist.uploadAPIUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:36677/upload",
+          "markdownDescription": "%config.uploadAPIUrl.description%"
+        },
+        "piclist.deleteAPIUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:36677/delete",
+          "markdownDescription": "%config.deleteAPIUrl.description%"
+        },
+        "piclist.copyType": {
+          "type": "string",
+          "default": "markdown",
+          "markdownDescription": "%config.copyType.description%",
+          "enum": [
+            "markdown",
+            "html",
+            "url",
+            "ubb",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "%config.copyType.markdown%",
+            "%config.copyType.html%",
+            "%config.copyType.url%",
+            "%config.copyType.ubb%",
+            "%config.copyType.custom%"
+          ]
+        },
+        "piclist.customType": {
+          "type": "string",
+          "default": "![$fileName]($url)",
+          "markdownDescription": "%config.customType.description%"
+        },
+        "piclist.encodeUrl": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%config.encodeUrl.description%"
+        }
+      }
+    }
+  },
+  "extensionKind": [
+    "ui"
+  ],
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+    "cz": "git-cz",
+    "release": "bump-version",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.11",
+    "@commitlint/cli": "^17.7.1",
+    "@picgo/bump-version": "^1.1.2",
+    "@types/fs-extra": "^11.0.1",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@types/vscode": "^1.81.0",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "@vscode/test-electron": "^2.3.4",
+    "conventional-changelog": "^5.0.0",
+    "cz-customizable": "^7.0.0",
+    "eslint": "^8.48.0",
+    "eslint-config-standard-with-typescript": "^39.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "5.0.0",
+    "glob": "^8.1.0",
+    "husky": "^3.1.0",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.9",
+    "vue-eslint-parser": "^9.3.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@picgo/store": "2.0.4",
+    "axios": "1.5.0",
+    "fs-extra": "^11.1.1"
+  },
+  "commitlint": {
+    "extends": [
+      "./node_modules/@picgo/bump-version/commitlint-picgo"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./node_modules/@picgo/bump-version/.cz-config.js"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
