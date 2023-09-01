@@ -22,11 +22,9 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 ## Features
 
 - **Effortless Uploads**: With just a few clicks, upload images to your preferred remote image hosting service.
-  
+- **Upload on Drag-and-Drop**: Drag-and-drop images from your file explorer directly into your working file.
 - **Auto-Insert URLs**: The extension takes care of inserting the image URL directly into your working file.
-  
 - **Image Management**: Easily delete images stored in your remote hosting service directly through PicList in VSCode.
-  
 - **Advanced Image Processing**: Includes support for image compression, watermarking, and other post-upload manipulations.
 
 ### Gif Demo
@@ -44,6 +42,11 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 <details>
 <summary>Uploading images from local path or URL</summary>
 <img src="https://s2.loli.net/2023/08/31/tAW54rVFhO2KSTo.gif" alt="input box.gif">
+</details>
+
+<details>
+<summary>Uploading images on Drag-and-Drop</summary>
+<img src="https://s2.loli.net/2023/09/01/rflXoJLsR5heDqK.gif" alt="input box.gif">
 </details>
 
 <details>
@@ -81,7 +84,11 @@ Default is `![$filename]($url)`.
 
 ### Encode URL
 
-Whether to encode URL when insert text.
+Whether to encode URL when insert text. Default is `false`.
+
+### Enable upload on drop
+
+Whether to enable upload on drop.Default is `true`.
 
 ## Contributors
 
