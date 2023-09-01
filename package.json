@@ -125,6 +125,11 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "%config.encodeUrl.description%"
+        },
+        "piclist.enableDragUpload": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.enableDragUpload.description%"
         }
       }
     }
