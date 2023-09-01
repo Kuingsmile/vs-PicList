@@ -12,7 +12,7 @@ export const isUrlEncode = (url: string): boolean => {
   }
 }
 
-export const handleUrlEncode = (url: string): string => isUrlEncode(url) ? url : encodeURI(url)
+export const handleUrlEncode = (url: string): string => (isUrlEncode(url) ? url : encodeURI(url))
 
 export const isURL = (url: string | undefined): boolean => {
   if (!url) return false
@@ -24,20 +24,17 @@ export const isURL = (url: string | undefined): boolean => {
   }
 }
 
-export function extractUrl (str: string): string {
-  const patterns = [
-    /!\[.*?\]\((.*?)\)/,
-    /<img src="(.*?)" alt=".*?">/,
-    /(https?:\/\/[^\s]+)/,
-    /\[img\](.*?)\[\/img\]/
-  ];
+export function extractUrl(str: string): string[] {
+  const patterns = [/!\[.*?\]\((.*?)\)/g, /<img src="(.*?)" alt=".*?">/g, /(https?:\/\/[^\s]+)/g, /\[img\](.*?)\[\/img\]/g]
 
+  const urls = []
   for (const pattern of patterns) {
-    const match = str.match(pattern);
-    if (match && match[1]) {
-      return match[1];
+    while (true) {
+      const match = pattern.exec(str)
+      if (!match) break
+      urls.push(match[1])
     }
   }
-
-  return '';
+  console.log(`urls: ${urls}`)
+  return Array.from(new Set(urls))
 }

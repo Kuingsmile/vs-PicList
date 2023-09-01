@@ -13,7 +13,6 @@ export class DataStore {
 
   get appDataPath() {
     const appDataPath = getAppDataPath('vs-piclist')
-    console.log('appDataPath', appDataPath)
     fs.ensureDirSync(appDataPath)
     return appDataPath
   }
@@ -25,7 +24,6 @@ export class DataStore {
   static writeUploadedFileDB(data: IStringKeyObject[]) {
     try {
       const originData = DataStore.readUploadedFileDB() || []
-      console.log('data', data)
       const newData = [...originData, ...data]
       fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, newData)
     } catch (error) {
@@ -43,15 +41,26 @@ export class DataStore {
     }
   }
 
-  static searchUploadedFileDB(url: string): IStringKeyObject {
+  static searchUploadedFileDB(urls: string[]): IStringKeyObject[] {
     const data = DataStore.readUploadedFileDB()
-    const res = data.find(item => item.imgUrl === url || decodeURI(item.imgUrl) === url) || {}
+    const res = [] as IStringKeyObject[]
+    for (const url of urls) {
+      const item = data.find(item => item.imgUrl === url || decodeURI(item.imgUrl) === url)
+      if (item) {
+        res.push(item)
+      }
+    }
     return res
   }
 
-  static removeUploadedFileDBItem(item: IStringKeyObject) {
+  static removeUploadedFileDBItem(items: IStringKeyObject[]) {
     const data = DataStore.readUploadedFileDB()
-    const newData = data.filter((i: IStringKeyObject) => i.id !== item.id)
-    fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, newData)
+    for (const item of items) {
+      const index = data.findIndex((i: IStringKeyObject) => i.id === item.id)
+      if (index !== -1) {
+        data.splice(index, 1)
+      }
+    }
+    fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, data)
   }
 }

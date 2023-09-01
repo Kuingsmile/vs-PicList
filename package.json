@@ -25,7 +25,10 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:plaintext",
+    "onLanguage:markdown"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -47,6 +50,11 @@
       {
         "command": "piclist.deleteImage",
         "title": "%command.delete.title%",
+        "category": "PicList"
+      },
+      {
+        "command": "piclist.openImageDB",
+        "title": "%command.openImageDB.title%",
         "category": "PicList"
       }
     ],

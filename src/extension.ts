@@ -2,8 +2,12 @@ import * as vscode from 'vscode'
 import { Commands } from './vscode/commands'
 import { DataStore } from './vscode/db'
 import { extractUrl } from './utils'
+import { UploadonDropProvider } from './vscode/dropProvider'
 
 export async function activate(context: vscode.ExtensionContext) {
+  const selector: vscode.DocumentSelector = {
+    language: 'plaintext',
+  }
   const disposable = [
     vscode.commands.registerCommand(
       'piclist.uploadFromClipboard',
@@ -12,6 +16,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'piclist.uploadFromExplorer',
       async () => await Commands.commandManager.uploadImageFromExplorer()
+    ),
+    vscode.commands.registerCommand(
+      'piclist.openImageDB',
+      async () => await Commands.commandManager.openImageDB()
     ),
     vscode.commands.registerCommand(
       'piclist.uploadFromInputBox',
@@ -40,6 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   ]
   context.subscriptions.push(...disposable)
+  context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider(selector, new UploadonDropProvider()))
 
   return context
 }

@@ -4,6 +4,7 @@
   "command.upload.clipboard.title": "Upload from clipboard",
   "command.upload.explorer.title": "Upload from explorer",
   "command.upload.inputBox.title": "Upload from input path or url",
+  "command.openImageDB.title": "Open PicList image database",
   "command.delete.title": "Delete Image by PicList",
   "config.title": "PicList",
   "config.uploadAPIUrl.description": "Upload API URL, default is `http://127.0.0.1:36677/upload`",
@@ -13,6 +14,7 @@
   "config.copyType.url": "URL: url",
   "config.copyType.ubb": "UBB: [img]url[/img]",
   "config.copyType.custom": "Custom",
+  "config.copyType.description": "Copy type, default is `Markdown: ![alt](url)`, support `Markdown`, `HTML`, `URL`, `UBB`, `Custom`",
   "config.customType.description": "Custom copy type, default is `Markdown: ![$fileName]($url)`, support `$fileName`, `$url`",
   "config.encodeUrl.description": "Whether to encode the URL, default is `false`"
 }

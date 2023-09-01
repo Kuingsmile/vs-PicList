@@ -57,13 +57,26 @@ export class Commands {
     }
   }
 
-  async DeleteImage(item: IStringKeyObject): Promise<boolean> {
-    if (Object.keys(item).length === 0) return false
+  async openImageDB() {
+    const filePath = DataStore.dataStore.conUploadedFileDBPath
+    if (fs.existsSync(filePath)) {
+      vscode.commands.executeCommand('vscode.open', vscode.Uri.file(filePath))
+    } else {
+      showError('No uploaded image.')
+    }
+  }
+
+  async uploadImageFromStringList(input: string[]) {
+    return await this.uploadCommand(input.map(item => path.resolve(item.trim())))
+  }
+
+  async DeleteImage(items: IStringKeyObject[]): Promise<boolean> {
+    if (items.length === 0) return true
     try {
       const res = await axios.post(
         Uploader.picgoAPI.getDeleteAPIUrl(),
         {
-          list: [item]
+          list: items
         },
         {
           headers: {
@@ -72,7 +85,7 @@ export class Commands {
         }
       )
       if (res.status === 200 && res.data.success) {
-        DataStore.removeUploadedFileDBItem(item)
+        DataStore.removeUploadedFileDBItem(items)
         return true
       } else {
         return false
