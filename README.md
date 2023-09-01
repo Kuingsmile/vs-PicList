@@ -2,9 +2,9 @@
 
 > The VSCode extension of [PicList](https://github.com/Kuingsmile/PicList).
 
-[![version](https://img.shields.io/vscode-marketplace/v/Spades.vs-piclist.svg?style=flat-square&label=vscode%20marketplace)](https://marketplace.visualstudio.com/items?itemName=Spades.vs-piclist)
-![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Spades.vs-piclist?style=flat-square)
-[![installs](https://img.shields.io/vscode-marketplace/d/Spades.vs-piclist.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=Spades.vs-piclist)
+[![version](https://img.shields.io/vscode-marketplace/v/Kuingsmile.vs-piclist.svg?style=flat-square&label=vscode%20marketplace)](https://marketplace.visualstudio.com/items?itemName=Kuingsmile.vs-piclist)
+![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Kuingsmile.vs-piclist?style=flat-square)
+[![installs](https://img.shields.io/vscode-marketplace/d/Kuingsmile.vs-piclist.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=Kuingsmile.vs-piclist)
 [![GitHub stars](https://img.shields.io/github/stars/Kuingsmile/vs-piclist.svg?style=flat-square&label=github%20stars)](https://github.com/Kuingsmile/vs-piclist)
 
 ## Overview
