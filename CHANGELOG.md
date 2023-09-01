@@ -1,3 +1,17 @@
+## :tada: 1.1.1 (2023-09-01)
+
+
+### :sparkles: Features
+
+* **custom:** support disable upload on drag ([d009c2e](https://github.com/Kuingsmile/vs-piclist/commit/d009c2e))
+
+
+### :pencil: Documentation
+
+* **custom:** update readme ([e5ac52b](https://github.com/Kuingsmile/vs-piclist/commit/e5ac52b))
+
+
+
 # :tada: 1.1.0 (2023-09-01)
 
 
