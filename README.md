@@ -13,7 +13,7 @@
 
 ### Prerequisites
 
-Before you can make use of `vs-piclist`, you must first install the desktop software, [PicList](https://github.com/Kuingsmile/PicList).
+Before you can make use of `vs-piclist`, you must first install the desktop software, [PicList](https://github.com/Kuingsmile/PicList), or the [PicList-Core](https://github.com/Kuingsmile/piclist-core).
 
 ### Competitive Edge
 
@@ -26,6 +26,7 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 - **Auto-Insert URLs**: The extension takes care of inserting the image URL directly into your working file.
 - **Image Management**: Easily delete images stored in your remote hosting service directly through PicList in VSCode.
 - **Advanced Image Processing**: Includes support for image compression, watermarking, and other post-upload manipulations.
+- **Remote Server Mode**: Supports the use of PicList and piclist-core services running on a server or remote machine.
 
 ### Gif Demo
 
@@ -89,6 +90,10 @@ Whether to encode URL when insert text. Default is `false`.
 ### Enable upload on drop
 
 Whether to enable upload on drop.Default is `true`.
+
+### Remote Server Mode
+
+When you deploy Piclist or Piclist-Core service on a server or other machine, you can enable remote server mode, and then upload requests will be initiated by sending files.
 
 ## Contributors
 

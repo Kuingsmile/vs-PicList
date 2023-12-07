@@ -17,7 +17,7 @@
     "piclist"
   ],
   "icon": "logo.png",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "Kuingsmile",
   "engines": {
     "vscode": "^1.81.0"
@@ -126,6 +126,11 @@
           "default": false,
           "markdownDescription": "%config.encodeUrl.description%"
         },
+        "piclist.remoteServerMode": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%config.remoteServerMode.description%"
+        },
         "piclist.enableDragUpload": {
           "type": "boolean",
           "default": true,
@@ -151,24 +156,24 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.11",
+    "@babel/eslint-parser": "^7.23.3",
     "@commitlint/cli": "^17.7.1",
     "@picgo/bump-version": "^1.1.2",
-    "@types/fs-extra": "^11.0.1",
+    "@types/fs-extra": "^11.0.4",
     "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "20.2.5",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.10.4",
     "@types/vscode": "^1.81.0",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
-    "@vscode/test-electron": "^2.3.4",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "@vscode/test-electron": "^2.3.8",
     "conventional-changelog": "^5.0.0",
     "cz-customizable": "^7.0.0",
-    "eslint": "^8.48.0",
+    "eslint": "^8.55.0",
     "eslint-config-standard-with-typescript": "^39.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-prettier": "5.0.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "5.0.0",
     "glob": "^8.1.0",
@@ -176,14 +181,17 @@
     "mocha": "^10.2.0",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.9",
-    "vue-eslint-parser": "^9.3.1",
-    "webpack": "^5.88.2",
+    "vue-eslint-parser": "^9.3.2",
+    "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@picgo/store": "2.0.4",
-    "axios": "1.5.0",
-    "fs-extra": "^11.1.1"
+    "@picgo/store": "2.1.0",
+    "axios": "1.6.2",
+    "dayjs": "^1.11.10",
+    "form-data": "^4.0.0",
+    "fs-extra": "^11.2.0",
+    "raw-loader": "^4.0.2"
   },
   "commitlint": {
     "extends": [

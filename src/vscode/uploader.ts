@@ -1,9 +1,11 @@
 import * as vscode from 'vscode'
-import { showError } from './utils'
+import { showError, getRemoteServerMode } from './utils'
 import axios from 'axios'
 import { Editor } from './Editor'
 import { handleUrlEncode } from '../utils'
 import { DataStore } from './db'
+import FormData from 'form-data'
+import fs from 'fs-extra'
 
 export class Uploader {
   static picgoAPI = new Uploader()
@@ -47,17 +49,33 @@ export class Uploader {
 
   async upload(input?: string[]): Promise<string> {
     try {
-      const res = await axios.post(
-        this.getUploadAPIUrl(),
-        {
-          list: input || []
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      let res
+      if (getRemoteServerMode()) {
+        const formData = new FormData()
+        const fileLists = input!.map(item => {
+          return fs.createReadStream(item)
+        })
+        for (const file of fileLists) {
+          formData.append('file', file)
         }
-      )
+        res = await axios.post(this.getUploadAPIUrl(), formData, {
+          headers: { 
+            ...formData.getHeaders()
+          }
+        })
+      } else {
+        res = await axios.post(
+          this.getUploadAPIUrl(),
+          {
+            list: input || []
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+      }
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
         const output = res.data.result.map((item: string) => {

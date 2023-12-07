@@ -20,6 +20,7 @@
 - **自动插入URL**：扩展会自动将图像URL插入到您的工作文件中。
 - **图像管理**：通过VSCode中的PicList轻松删除存储在远程托管服务中的图像。
 - **高级图像处理**：包括对图像压缩、水印和其他上传后处理的支持。
+- **远程服务器模式**：支持使用在服务器或远程机器上运行的PicList以及piclist-core服务。
 
 ### Gif 演示
 
@@ -60,6 +61,14 @@
 
 是否需要在插入时编码URL。
 
+### 拖拽上传
+
+是否开启拖拽上传。
+
+### 远程服务器模式
+
+当您在服务器或其它机器上部署了Piclist或Piclist-Core服务时，可开启远程服务器模式，此时将会通过发送文件的方式发起上传请求。
+
 ## 作者
 
 - [Kuingsmile](https://github.com/Kuingsmile)
@@ -67,3 +76,4 @@
 ## 依赖
 
 - [PicList](https://github.com/Kuingsmile/PicList)
+- [PicList-Core](https://github.com/Kuingsmile/piclist-core)

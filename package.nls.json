@@ -17,5 +17,6 @@
   "config.copyType.description": "Copy type, default is `Markdown: ![alt](url)`, support `Markdown`, `HTML`, `URL`, `UBB`, `Custom`",
   "config.customType.description": "Custom copy type, default is `Markdown: ![$fileName]($url)`, support `$fileName`, `$url`",
   "config.encodeUrl.description": "Whether to encode the URL, default is `false`",
+  "config.remoteServerMode.description": "Whether to use remote server mode, default is `false`",
   "config.enableDragUpload.description": "Whether to enable drag upload, default is `true`"
 }

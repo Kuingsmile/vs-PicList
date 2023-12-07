@@ -3,25 +3,34 @@ import * as path from 'path'
 import * as vscode from 'vscode'
 import { Editor } from './Editor'
 import { Uploader } from './uploader'
-import { showError } from './utils'
+import { getRemoteServerMode, showError } from './utils'
 import { isURL } from '../utils'
 import { DataStore, IStringKeyObject } from './db'
 import axios from 'axios'
+import getClipboardImage from './clipboard/getClipboardImage'
 
 export class Commands {
   static commandManager: Commands = new Commands()
 
-  async uploadCommand(input?: string[]) {
+  async uploadCommand(input?: string[], shouldKeepAfterUploading = true) {
     const output = await Uploader.picgoAPI.upload(input)
 
     if (!output) return
+    if (shouldKeepAfterUploading === false && input) {
+      fs.removeSync(input[0])
+    }
     vscode.env.clipboard.writeText(output)
     await Editor.writeToEditor(output)
     return output
   }
 
   async uploadImageFromClipboard() {
-    this.uploadCommand()
+    if (getRemoteServerMode()) {
+      const { imgPath, shouldKeepAfterUploading } = await getClipboardImage()
+      this.uploadCommand([imgPath], shouldKeepAfterUploading)
+    } else {
+      this.uploadCommand()
+    }
   }
 
   async uploadImageFromExplorer() {

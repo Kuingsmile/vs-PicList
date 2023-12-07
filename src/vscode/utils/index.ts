@@ -56,3 +56,10 @@ export const showMessage = (messageToShow: IMessageToShow) => {
     default:
   }
 }
+
+export function getRemoteServerMode(): boolean {
+  if (vscode.workspace) {
+    return vscode.workspace.getConfiguration('piclist').get('remoteServerMode') || false
+  }
+  return false
+}
