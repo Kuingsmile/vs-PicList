@@ -1,6 +1,5 @@
-
-import nls = require('../../package.nls.json');
+import nls = require('../../package.nls.json')
 
 export const getNLSText = (field: keyof typeof nls) => {
-  return nls[field];
-};
+  return nls[field]
+}

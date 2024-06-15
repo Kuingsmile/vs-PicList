@@ -7,7 +7,7 @@ export class Editor {
 
   static async writeToEditor(text: string) {
     const editor = this.editor
-    return await editor?.edit((textEditor) => {
+    return await editor?.edit(textEditor => {
       textEditor.replace(editor.selection, text)
     })
   }

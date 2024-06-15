@@ -59,7 +59,7 @@ export class Uploader {
           formData.append('file', file)
         }
         res = await axios.post(this.getUploadAPIUrl(), formData, {
-          headers: { 
+          headers: {
             ...formData.getHeaders()
           }
         })
@@ -79,7 +79,10 @@ export class Uploader {
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
         const output = res.data.result.map((item: string) => {
-          return this.formatOutput(item, selectedText || decodeURIComponent(new URL(item).pathname.split('/').pop() || '') || '')
+          return this.formatOutput(
+            item,
+            selectedText || decodeURIComponent(new URL(item).pathname.split('/').pop() || '') || ''
+          )
         })
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)
@@ -108,8 +111,8 @@ export class Uploader {
       case 'custom':
         return this.getCustomType()
           ? this.getCustomType()
-            .replace(/\$fileName/g, fileName)
-            .replace(/\$url/g, encodeUrl)
+              .replace(/\$fileName/g, fileName)
+              .replace(/\$url/g, encodeUrl)
           : '![$fileName]($url)'.replace(/\$fileName/g, fileName).replace(/\$url/g, encodeUrl)
       default:
         return encodeUrl

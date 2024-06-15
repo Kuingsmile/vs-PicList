@@ -6,7 +6,7 @@ import { UploadonDropProvider } from './vscode/dropProvider'
 
 export async function activate(context: vscode.ExtensionContext) {
   const selector: vscode.DocumentSelector = {
-    language: 'plaintext',
+    language: 'plaintext'
   }
   const disposable = [
     vscode.commands.registerCommand(
@@ -17,10 +17,7 @@ export async function activate(context: vscode.ExtensionContext) {
       'piclist.uploadFromExplorer',
       async () => await Commands.commandManager.uploadImageFromExplorer()
     ),
-    vscode.commands.registerCommand(
-      'piclist.openImageDB',
-      async () => await Commands.commandManager.openImageDB()
-    ),
+    vscode.commands.registerCommand('piclist.openImageDB', async () => await Commands.commandManager.openImageDB()),
     vscode.commands.registerCommand(
       'piclist.uploadFromInputBox',
       async () => await Commands.commandManager.uploadImageFromInputBox()

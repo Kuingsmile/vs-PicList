@@ -32,7 +32,7 @@ export const showInfo = async (message: string) => {
       title: 'message',
       cancellable: false
     },
-    async (progress) => {
+    async progress => {
       for (let i = 0; i < 10; i++) {
         setTimeout(() => {
           progress.report({ increment: i * 10, message })

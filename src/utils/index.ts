@@ -25,7 +25,12 @@ export const isURL = (url: string | undefined): boolean => {
 }
 
 export function extractUrl(str: string): string[] {
-  const patterns = [/!\[.*?\]\((.*?)\)/g, /<img src="(.*?)" alt=".*?">/g, /(https?:\/\/[^\s]+)/g, /\[img\](.*?)\[\/img\]/g]
+  const patterns = [
+    /!\[.*?\]\((.*?)\)/g,
+    /<img src="(.*?)" alt=".*?">/g,
+    /(https?:\/\/[^\s]+)/g,
+    /\[img\](.*?)\[\/img\]/g
+  ]
 
   const urls = []
   for (const pattern of patterns) {
