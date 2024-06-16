@@ -9,7 +9,9 @@
 
 ## Overview
 
-`vs-piclist` is a feature-rich VSCode extension designed for seamless image management. This extension enables you to easily upload images to a remote hosting service and automatically insert the generated URL into your currently active file. What sets `vs-piclist` apart from other solutions is its robust set of features, including image compression, watermarking, and other advanced image processing capabilities.
+`vs-piclist` is a feature-rich VSCode extension designed for seamless image management. This extension enables you to easily upload images to a remote hosting service and automatically insert the generated URL into your currently active file.
+
+What sets `vs-piclist` apart from other solutions is its robust set of features, including image compression, watermarking, and other advanced image processing capabilities.
 
 ### Prerequisites
 
@@ -23,6 +25,8 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 
 - **Effortless Uploads**: With just a few clicks, upload images to your preferred remote image hosting service.
 - **Upload on Drag-and-Drop**: Drag-and-drop images from your file explorer directly into your working file.
+- **Upload All**: Upload all images in a file.
+- **Upload Selected**: Right-click to upload selected images.
 - **Auto-Insert URLs**: The extension takes care of inserting the image URL directly into your working file.
 - **Image Management**: Easily delete images stored in your remote hosting service directly through PicList in VSCode.
 - **Advanced Image Processing**: Includes support for image compression, watermarking, and other post-upload manipulations.
@@ -53,6 +57,16 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 <details>
 <summary>Delete images in your remote hosting service</summary>
 <img src="https://s2.loli.net/2023/09/01/8oYzJinhgajLfdI.gif" alt="input box.gif">
+</details>
+
+<details>
+<summary>Upload all images in a file</summary>
+<img src="https://s2.loli.net/2024/06/16/9JDyICxZ3mUEBio.gif" alt="input box.gif">
+</details>
+
+<details>
+<summary>Upload selected images in a file by right click</summary>
+<img src="https://s2.loli.net/2024/06/16/GUVjraIWTuX2wgn.gif" alt="input box.gif">
 </details>
 
 ## Settings
@@ -102,3 +116,4 @@ When you deploy Piclist or Piclist-Core service on a server or other machine, yo
 ## Dependencies
 
 - [PicList](https://github.com/Kuingsmile/PicList)
+- [PicList-Core](https://github.com/Kuingsmile/piclist-core)

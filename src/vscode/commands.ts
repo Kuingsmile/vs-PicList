@@ -122,6 +122,7 @@ export class Commands {
         }
         text = document.getText(editor.selection)
       }
+      const textLength = text.length
       const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
       let match
       const uploadedImages: { [key: string]: string } = {}
@@ -157,7 +158,7 @@ export class Commands {
       const range =
         selected && !editor.selection.isEmpty
           ? editor.selection
-          : new vscode.Range(document.positionAt(0), document.positionAt(text.length))
+          : new vscode.Range(document.positionAt(0), document.positionAt(textLength))
       editor.edit(editBuilder => {
         editBuilder.replace(range, text)
       })
