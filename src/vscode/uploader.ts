@@ -47,7 +47,7 @@ export class Uploader {
     return false
   }
 
-  async upload(input?: string[]): Promise<string> {
+  async upload(input?: string[], getFileNameFromRes = false): Promise<string> {
     try {
       let res
       if (getRemoteServerMode()) {
@@ -79,7 +79,7 @@ export class Uploader {
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
         const output = res.data.result.map((item: string) => {
-          return this.formatOutput(item, getFileName(item, selectedText))
+          return this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes))
         })
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)

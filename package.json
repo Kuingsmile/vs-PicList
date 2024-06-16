@@ -61,12 +61,21 @@
         "command": "piclist.uploadAllImgInFile",
         "title": "%command.uploadAllImgInFile.title%",
         "category": "PicList"
+      },
+      {
+        "command": "piclist.uploadSelectedImg",
+        "title": "%command.uploadSelectedImg.title%",
+        "category": "PicList"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "command": "piclist.deleteImage",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "piclist.uploadSelectedImg",
           "when": "editorTextFocus"
         }
       ]

@@ -7,6 +7,7 @@
   "command.openImageDB.title": "Open PicList image database",
   "command.uploadAllImgInFile.title": "Upload all images in the file",
   "command.delete.title": "Delete Image by PicList",
+  "command.uploadSelectedImg.title": "Upload Image by PicList",
   "config.title": "PicList",
   "config.uploadAPIUrl.description": "Upload API URL, default is `http://127.0.0.1:36677/upload`",
   "config.deleteAPIUrl.description": "Delete API URL, default is `http://127.0.0.1:36677/delete`",

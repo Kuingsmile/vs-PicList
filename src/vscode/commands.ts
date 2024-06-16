@@ -12,8 +12,13 @@ import getClipboardImage from './clipboard/getClipboardImage'
 export class Commands {
   static commandManager: Commands = new Commands()
 
-  async uploadCommand(input?: string[], shouldKeepAfterUploading = true, writeToEditor = true) {
-    const output = await Uploader.picgoAPI.upload(input)
+  async uploadCommand(
+    input?: string[],
+    shouldKeepAfterUploading = true,
+    writeToEditor = true,
+    getFileNameFromRes = false
+  ) {
+    const output = await Uploader.picgoAPI.upload(input, getFileNameFromRes)
     if (!output) return
     if (shouldKeepAfterUploading === false && input) {
       fs.removeSync(input[0])
@@ -106,11 +111,17 @@ export class Commands {
     }
   }
 
-  async uploadAllImgInFile() {
+  async uploadAllImgInFile(selected = false) {
     const editor = vscode.window.activeTextEditor
     if (editor) {
       const document = editor.document
       let text = document.getText()
+      if (selected) {
+        if (editor.selection.isEmpty) {
+          return
+        }
+        text = document.getText(editor.selection)
+      }
       const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
       let match
       const uploadedImages: { [key: string]: string } = {}
@@ -127,11 +138,11 @@ export class Commands {
             res = uploadedImages[url]
           } else {
             if (isURL(url)) {
-              res = await this.uploadCommand([url], true, false)
+              res = await this.uploadCommand([url], true, false, true)
             } else {
               const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
               if (fs.existsSync(localPath)) {
-                res = await this.uploadCommand([localPath], true, false)
+                res = await this.uploadCommand([localPath], true, false, true)
               }
             }
             if (res) {
@@ -143,10 +154,20 @@ export class Commands {
           }
         }
       }
-      const range = new vscode.Range(document.positionAt(0), document.positionAt(text.length))
+      const range =
+        selected && !editor.selection.isEmpty
+          ? editor.selection
+          : new vscode.Range(document.positionAt(0), document.positionAt(text.length))
       editor.edit(editBuilder => {
         editBuilder.replace(range, text)
       })
+    }
+  }
+
+  async uploadSelectedImg() {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      await this.uploadAllImgInFile(true)
     }
   }
 }

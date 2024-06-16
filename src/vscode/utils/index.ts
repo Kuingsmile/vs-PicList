@@ -64,9 +64,9 @@ export function getRemoteServerMode(): boolean {
   return false
 }
 
-export function getFileName(item: string, selectedText?: string): string {
+export function getFileName(item: string, selectedText?: string, getFileNameFromRes = false): string {
   let fileName: string = ''
-  if (selectedText) {
+  if (selectedText && !getFileNameFromRes) {
     fileName = selectedText
   } else {
     try {
