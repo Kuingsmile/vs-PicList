@@ -12,15 +12,16 @@ import getClipboardImage from './clipboard/getClipboardImage'
 export class Commands {
   static commandManager: Commands = new Commands()
 
-  async uploadCommand(input?: string[], shouldKeepAfterUploading = true) {
+  async uploadCommand(input?: string[], shouldKeepAfterUploading = true, writeToEditor = true) {
     const output = await Uploader.picgoAPI.upload(input)
-
     if (!output) return
     if (shouldKeepAfterUploading === false && input) {
       fs.removeSync(input[0])
     }
-    vscode.env.clipboard.writeText(output)
-    await Editor.writeToEditor(output)
+    if (writeToEditor) {
+      vscode.env.clipboard.writeText(output)
+      await Editor.writeToEditor(output)
+    }
     return output
   }
 
@@ -102,6 +103,50 @@ export class Commands {
     } catch (error) {
       console.error(error)
       return false
+    }
+  }
+
+  async uploadAllImgInFile() {
+    const editor = vscode.window.activeTextEditor
+    if (editor) {
+      const document = editor.document
+      let text = document.getText()
+      const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
+      let match
+      const uploadedImages: { [key: string]: string } = {}
+      const matches = []
+      while ((match = regex.exec(text)) !== null) {
+        matches.push(match)
+      }
+      for (const match of matches) {
+        const imgSyntax = match[0]
+        const url = match[2] || match[4] || match[5] || match[7]
+        if (url) {
+          let res: string | undefined
+          if (uploadedImages[url]) {
+            res = uploadedImages[url]
+          } else {
+            if (isURL(url)) {
+              res = await this.uploadCommand([url], true, false)
+            } else {
+              const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
+              if (fs.existsSync(localPath)) {
+                res = await this.uploadCommand([localPath], true, false)
+              }
+            }
+            if (res) {
+              uploadedImages[url] = res
+            }
+          }
+          if (res) {
+            text = text.replace(imgSyntax, res)
+          }
+        }
+      }
+      const range = new vscode.Range(document.positionAt(0), document.positionAt(text.length))
+      editor.edit(editBuilder => {
+        editBuilder.replace(range, text)
+      })
     }
   }
 }

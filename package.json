@@ -56,6 +56,11 @@
         "command": "piclist.openImageDB",
         "title": "%command.openImageDB.title%",
         "category": "PicList"
+      },
+      {
+        "command": "piclist.uploadAllImgInFile",
+        "title": "%command.uploadAllImgInFile.title%",
+        "category": "PicList"
       }
     ],
     "menus": {
@@ -162,7 +167,7 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "20.14.2",
-    "@types/vscode": "^1.90.0",
+    "@types/vscode": "^1.81.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@vscode/test-electron": "^2.3.8",

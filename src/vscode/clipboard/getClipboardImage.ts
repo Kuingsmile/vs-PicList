@@ -62,7 +62,7 @@ function appDataPath() {
 
 function ImageSaveDir() {
   const imageSavePath = path.join(appDataPath(), 'piclist-clipboard-image')
-  fs.ensureDirSync(imageSavePath)
+  fs.emptyDirSync(imageSavePath)
   return imageSavePath
 }
 

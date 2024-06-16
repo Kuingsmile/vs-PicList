@@ -42,6 +42,9 @@ export async function activate(context: vscode.ExtensionContext) {
           }
         }
       }
+    }),
+    vscode.commands.registerCommand('piclist.uploadAllImgInFile', async () => {
+      await Commands.commandManager.uploadAllImgInFile()
     })
   ]
   context.subscriptions.push(...disposable)

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { showError, getRemoteServerMode } from './utils'
+import { showError, getRemoteServerMode, getFileName } from './utils'
 import axios from 'axios'
 import { Editor } from './Editor'
 import { handleUrlEncode } from '../utils'
@@ -79,10 +79,7 @@ export class Uploader {
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
         const output = res.data.result.map((item: string) => {
-          return this.formatOutput(
-            item,
-            selectedText || decodeURIComponent(new URL(item).pathname.split('/').pop() || '') || ''
-          )
+          return this.formatOutput(item, getFileName(item, selectedText))
         })
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)

@@ -40,6 +40,5 @@ export function extractUrl(str: string): string[] {
       urls.push(match[1])
     }
   }
-  console.log(`urls: ${urls}`)
   return Array.from(new Set(urls))
 }

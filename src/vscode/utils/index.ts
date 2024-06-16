@@ -63,3 +63,17 @@ export function getRemoteServerMode(): boolean {
   }
   return false
 }
+
+export function getFileName(item: string, selectedText?: string): string {
+  let fileName: string = ''
+  if (selectedText) {
+    fileName = selectedText
+  } else {
+    try {
+      const url = new URL(item)
+      const pathSep = url.pathname.includes('/') ? '/' : '\\'
+      fileName = decodeURIComponent(url.pathname.split(pathSep).pop() || '') || ''
+    } catch (error) {}
+  }
+  return fileName || ''
+}
