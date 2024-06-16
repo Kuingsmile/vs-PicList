@@ -1,3 +1,18 @@
+# :tada: 1.3.0 (2024-06-16)
+
+
+### :sparkles: Features
+
+* **custom:** add upload all images in file ([7e1bfe9](https://github.com/Kuingsmile/vs-piclist/commit/7e1bfe9)), closes [#3](https://github.com/Kuingsmile/vs-piclist/issues/3)
+* **custom:** add upload selected file in menu ([e4bc5cd](https://github.com/Kuingsmile/vs-piclist/commit/e4bc5cd))
+
+
+### :pencil: Documentation
+
+* **custom:** update docs ([acc90e3](https://github.com/Kuingsmile/vs-piclist/commit/acc90e3))
+
+
+
 ## :tada: 1.1.1 (2023-09-01)
 
 
