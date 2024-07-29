@@ -6,7 +6,8 @@ import { UploadonDropProvider } from './vscode/dropProvider'
 
 export async function activate(context: vscode.ExtensionContext) {
   const selector: vscode.DocumentSelector = {
-    language: 'plaintext'
+    language: '*',
+    scheme: 'file'
   }
   const disposable = [
     vscode.commands.registerCommand(
