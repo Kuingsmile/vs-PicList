@@ -1,3 +1,12 @@
+## :tada: 1.3.1 (2024-07-29)
+
+
+### :bug: Bug Fixes
+
+* **custom:** fix drag image for md file ([e250202](https://github.com/Kuingsmile/vs-piclist/commit/e250202)), closes [#6](https://github.com/Kuingsmile/vs-piclist/issues/6)
+
+
+
 # :tada: 1.3.0 (2024-06-16)
 
 
