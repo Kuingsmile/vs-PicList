@@ -1,3 +1,17 @@
+## :tada: 1.3.2 (2025-06-01)
+
+
+### :sparkles: Features
+
+* **custom:** streamline code for better readability and performance ([ad87131](https://github.com/Kuingsmile/vs-piclist/commit/ad87131))
+
+
+### :bug: Bug Fixes
+
+* **custom:** fix drag image for md file ([e250202](https://github.com/Kuingsmile/vs-piclist/commit/e250202)), closes [#6](https://github.com/Kuingsmile/vs-piclist/issues/6)
+
+
+
 ## :tada: 1.3.1 (2024-07-29)
 
 
