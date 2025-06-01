@@ -9,42 +9,32 @@ import fs from 'fs-extra'
 
 export class Uploader {
   static picgoAPI = new Uploader()
-
   constructor() {}
 
   getUploadAPIUrl(): string {
-    if (vscode.workspace) {
-      return vscode.workspace.getConfiguration('piclist').get('uploadAPIUrl') || 'http://127.0.0.1:36677/upload'
-    }
-    return 'http://127.0.0.1:36677/upload'
+    return vscode.workspace
+      ? vscode.workspace.getConfiguration('piclist').get('uploadAPIUrl') || 'http://127.0.0.1:36677/upload'
+      : 'http://127.0.0.1:36677/upload'
   }
 
   getDeleteAPIUrl(): string {
-    if (vscode.workspace) {
-      return vscode.workspace.getConfiguration('piclist').get('deleteAPIUrl') || 'http://127.0.0.1:36677/delete'
-    }
-    return 'http://127.0.0.1:36677/delete'
+    return vscode.workspace
+      ? vscode.workspace.getConfiguration('piclist').get('deleteAPIUrl') || 'http://127.0.0.1:36677/delete'
+      : 'http://127.0.0.1:36677/delete'
   }
 
   getCopyType(): string {
-    if (vscode.workspace) {
-      return vscode.workspace.getConfiguration('piclist').get('copyType') || 'markdown'
-    }
-    return 'markdown'
+    return vscode.workspace ? vscode.workspace.getConfiguration('piclist').get('copyType') || 'markdown' : 'markdown'
   }
 
   getCustomType(): string {
-    if (vscode.workspace) {
-      return vscode.workspace.getConfiguration('piclist').get('customType') || '![$fileName]($url)'
-    }
-    return '![$fileName]($url)'
+    return vscode.workspace
+      ? vscode.workspace.getConfiguration('piclist').get('customType') || '![$fileName]($url)'
+      : '![$fileName]($url)'
   }
 
   getEncodeUrl(): boolean {
-    if (vscode.workspace) {
-      return vscode.workspace.getConfiguration('piclist').get('encodeUrl') || false
-    }
-    return false
+    return vscode.workspace ? vscode.workspace.getConfiguration('piclist').get('encodeUrl') || false : false
   }
 
   async upload(input?: string[], getFileNameFromRes = false): Promise<string> {
@@ -52,35 +42,22 @@ export class Uploader {
       let res
       if (getRemoteServerMode()) {
         const formData = new FormData()
-        const fileLists = input!.map(item => {
-          return fs.createReadStream(item)
-        })
-        for (const file of fileLists) {
-          formData.append('file', file)
-        }
+        input!.forEach(item => formData.append('file', fs.createReadStream(item)))
         res = await axios.post(this.getUploadAPIUrl(), formData, {
-          headers: {
-            ...formData.getHeaders()
-          }
+          headers: { ...formData.getHeaders() }
         })
       } else {
         res = await axios.post(
           this.getUploadAPIUrl(),
-          {
-            list: input || []
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
+          { list: input || [] },
+          { headers: { 'Content-Type': 'application/json' } }
         )
       }
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
-        const output = res.data.result.map((item: string) => {
-          return this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes))
-        })
+        const output = res.data.result.map((item: string) =>
+          this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes))
+        )
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)
         return outputStr

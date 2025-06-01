@@ -14,16 +14,12 @@ function getForLinux() {
 }
 
 function getFallback() {
-  if (platform().startsWith('win')) {
-    return getForWindows()
-  }
-  return getForLinux()
+  return platform().startsWith('win') ? getForWindows() : getForLinux()
 }
 
-function getAppDataPath(app: string | undefined) {
+function getAppDataPath(app?: string) {
   let appDataPath = process.env['APPDATA']
-
-  if (appDataPath === undefined) {
+  if (!appDataPath) {
     switch (platform()) {
       case 'win32':
         appDataPath = getForWindows()
@@ -38,11 +34,7 @@ function getAppDataPath(app: string | undefined) {
         appDataPath = getFallback()
     }
   }
-
-  if (app === undefined) {
-    return appDataPath
-  }
-
+  if (!app) return appDataPath
   const normalizedAppName = appDataPath !== homedir() ? app : '.' + app
   return join(appDataPath, normalizedAppName)
 }

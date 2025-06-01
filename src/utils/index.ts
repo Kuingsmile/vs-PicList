@@ -4,7 +4,7 @@ export interface IMessageToShow {
 }
 
 export const isUrlEncode = (url: string): boolean => {
-  url = url || ''
+  if (!url) return false
   try {
     return url !== decodeURI(url)
   } catch {
@@ -32,13 +32,11 @@ export function extractUrl(str: string): string[] {
     /\[img\](.*?)\[\/img\]/g
   ]
 
-  const urls = []
+  const urls = new Set<string>()
   for (const pattern of patterns) {
-    while (true) {
-      const match = pattern.exec(str)
-      if (!match) break
-      urls.push(match[1])
+    for (const match of str.matchAll(pattern)) {
+      if (match[1]) urls.add(match[1])
     }
   }
-  return Array.from(new Set(urls))
+  return Array.from(urls)
 }

@@ -14,31 +14,19 @@ type Platform = 'darwin' | 'win32' | 'win10' | 'linux'
 function getCurrentPlatform(): Platform {
   const platform = process.platform
   if (platform === 'win32') {
-    const currentOS = os.release().split('.')[0]
-    if (currentOS === '10') {
-      return 'win10'
-    } else {
-      return 'win32'
-    }
-  } else if (platform === 'darwin') {
-    return 'darwin'
-  } else {
-    return 'linux'
+    return os.release().split('.')[0] === '10' ? 'win10' : 'win32'
   }
+  return platform === 'darwin' ? 'darwin' : 'linux'
 }
 
-const platform2ScriptContent: {
-  [key in Platform]: string
-} = {
+const platform2ScriptContent: { [key in Platform]: string } = {
   darwin: macClipboardScript,
   win32: windowsClipboardScript,
   win10: windows10ClipboardScript,
   linux: linuxClipboardScript
 }
 
-const platform2ScriptFilename: {
-  [key in Platform]: string
-} = {
+const platform2ScriptFilename: { [key in Platform]: string } = {
   darwin: 'mac.applescript',
   win32: 'windows.ps1',
   win10: 'windows10.ps1',
@@ -47,32 +35,27 @@ const platform2ScriptFilename: {
 
 interface IClipboardImage {
   imgPath: string
-  /**
-   * if the path is generate by picgo -> false
-   * if the path is a real file path in system -> true
-   */
   shouldKeepAfterUploading: boolean
 }
 
 function appDataPath() {
-  const appDataPath = getAppDataPath('vs-piclist')
-  fs.ensureDirSync(appDataPath)
-  return appDataPath
+  const dir = getAppDataPath('vs-piclist')
+  fs.ensureDirSync(dir)
+  return dir
 }
 
 function ImageSaveDir() {
-  const imageSavePath = path.join(appDataPath(), 'piclist-clipboard-image')
-  fs.emptyDirSync(imageSavePath)
-  return imageSavePath
+  const dir = path.join(appDataPath(), 'piclist-clipboard-image')
+  fs.emptyDirSync(dir)
+  return dir
 }
 
 const getClipboardImage = async (): Promise<IClipboardImage> => {
   const imageSaveDir = ImageSaveDir()
   const imagePath = path.join(imageSaveDir, `${dayjs().format('YYYYMMDDHHmmss')}.png`)
-  return await new Promise<IClipboardImage>((resolve: any, reject: any): void => {
+  return await new Promise<IClipboardImage>((resolve, reject) => {
     const platform = getCurrentPlatform()
     const scriptPath = path.join(appDataPath(), platform2ScriptFilename[platform])
-    // If the script does not exist yet, we need to write the content to the script file
     if (!fs.existsSync(scriptPath)) {
       fs.writeFileSync(scriptPath, platform2ScriptContent[platform], 'utf8')
     }
@@ -87,10 +70,6 @@ const getClipboardImage = async (): Promise<IClipboardImage> => {
         '-sta',
         '-executionpolicy',
         'unrestricted',
-        // fix windows 10 native cmd crash bug when "picgo upload"
-        // https://github.com/PicGo/PicGo-Core/issues/32
-        // '-windowstyle','hidden',
-        // '-noexit',
         '-file',
         scriptPath,
         imagePath
@@ -100,34 +79,18 @@ const getClipboardImage = async (): Promise<IClipboardImage> => {
     }
 
     execution.stdout.on('data', (data: Buffer) => {
-      if (platform === 'linux') {
-        if (data.toString().trim() === 'no xclip or wl-clipboard') {
-          return reject(new Error('Please install xclip(for x11) or wl-clipboard(for wayland) before run picgo'))
-        }
+      if (platform === 'linux' && data.toString().trim() === 'no xclip or wl-clipboard') {
+        return reject(new Error('Please install xclip(for x11) or wl-clipboard(for wayland) before run picgo'))
       }
       const imgPath = data.toString().trim()
-
-      // if the filePath is the real file in system
-      // we should keep it instead of removing
       let shouldKeepAfterUploading = false
-
-      // in macOS if your copy the file in system, it's basename will not equal to our default basename
-      if (path.basename(imgPath) !== path.basename(imagePath)) {
-        // if the path is not generate by picgo
-        // but the path exists, we should keep it
-        if (fs.existsSync(imgPath)) {
-          shouldKeepAfterUploading = true
-        }
+      if (path.basename(imgPath) !== path.basename(imagePath) && fs.existsSync(imgPath)) {
+        shouldKeepAfterUploading = true
       }
-      // if the imgPath is invalid
       if (imgPath !== 'no image' && !fs.existsSync(imgPath)) {
         return reject(new Error(`Can't find ${imgPath}`))
       }
-
-      resolve({
-        imgPath,
-        shouldKeepAfterUploading
-      })
+      resolve({ imgPath, shouldKeepAfterUploading })
     })
   })
 }

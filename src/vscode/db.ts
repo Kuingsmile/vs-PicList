@@ -8,13 +8,12 @@ export interface IStringKeyObject {
 
 export class DataStore {
   static dataStore: DataStore = new DataStore()
-
   private constructor() {}
 
   get appDataPath() {
-    const appDataPath = getAppDataPath('vs-piclist')
-    fs.ensureDirSync(appDataPath)
-    return appDataPath
+    const dir = getAppDataPath('vs-piclist')
+    fs.ensureDirSync(dir)
+    return dir
   }
 
   get conUploadedFileDBPath() {
@@ -43,23 +42,16 @@ export class DataStore {
 
   static searchUploadedFileDB(urls: string[]): IStringKeyObject[] {
     const data = DataStore.readUploadedFileDB()
-    const res = [] as IStringKeyObject[]
-    for (const url of urls) {
-      const item = data.find(item => item.imgUrl === url || decodeURI(item.imgUrl) === url)
-      if (item) {
-        res.push(item)
-      }
-    }
-    return res
+    return urls
+      .map(url => data.find(item => item.imgUrl === url || decodeURI(item.imgUrl) === url))
+      .filter(Boolean) as IStringKeyObject[]
   }
 
   static removeUploadedFileDBItem(items: IStringKeyObject[]) {
     const data = DataStore.readUploadedFileDB()
     for (const item of items) {
       const index = data.findIndex((i: IStringKeyObject) => i.id === item.id)
-      if (index !== -1) {
-        data.splice(index, 1)
-      }
+      if (index !== -1) data.splice(index, 1)
     }
     fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, data)
   }

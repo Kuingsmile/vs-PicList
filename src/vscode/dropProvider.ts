@@ -10,10 +10,9 @@ export class UploadonDropProvider implements vscode.DocumentDropEditProvider {
     dataTransfer: vscode.DataTransfer,
     token: vscode.CancellationToken
   ): Promise<vscode.DocumentDropEdit | undefined> {
-    let enable = true
-    if (vscode.workspace) {
-      enable = vscode.workspace.getConfiguration('piclist').get('enableDragUpload') ?? true
-    }
+    const enable = vscode.workspace
+      ? vscode.workspace.getConfiguration('piclist').get('enableDragUpload') ?? true
+      : true
     if (!enable) return undefined
     const dataTransferItem = dataTransfer.get(uriListMime)
     if (!dataTransferItem) return undefined
@@ -26,10 +25,8 @@ export class UploadonDropProvider implements vscode.DocumentDropEditProvider {
       } catch {}
     }
     if (!uris.length) return undefined
-
     const snippet = new vscode.SnippetString()
     await Commands.commandManager.uploadImageFromStringList(uris.map(item => item.fsPath))
-
     return new vscode.DocumentDropEdit(snippet)
   }
 }

@@ -20,9 +20,7 @@ export class Commands {
   ) {
     const output = await Uploader.picgoAPI.upload(input, getFileNameFromRes)
     if (!output) return
-    if (shouldKeepAfterUploading === false && input) {
-      fs.removeSync(input[0])
-    }
+    if (!shouldKeepAfterUploading && input) fs.removeSync(input[0])
     if (writeToEditor) {
       vscode.env.clipboard.writeText(output)
       await Editor.writeToEditor(output)
@@ -41,22 +39,17 @@ export class Commands {
 
   async uploadImageFromExplorer() {
     const result = await vscode.window.showOpenDialog({
-      filters: {
-        Images: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'svg']
-      },
+      filters: { Images: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'svg'] },
       canSelectMany: true
     })
-
-    if (result != null) {
-      const input = result.map(item => item.fsPath)
-      this.uploadCommand(input.map(item => path.resolve(item)))
+    if (result) {
+      const input = result.map(item => path.resolve(item.fsPath))
+      this.uploadCommand(input)
     }
   }
 
   async uploadImageFromInputBox() {
-    let result = await vscode.window.showInputBox({
-      placeHolder: 'Please input an local image path or URL'
-    })
+    let result = await vscode.window.showInputBox({ placeHolder: 'Please input an local image path or URL' })
     const imageReg = /\.(png|jpg|jpeg|webp|gif|bmp|tiff|ico|svg)$/
     if (isURL(result)) {
       return await this.uploadCommand([result!])
@@ -86,25 +79,18 @@ export class Commands {
   }
 
   async DeleteImage(items: IStringKeyObject[]): Promise<boolean> {
-    if (items.length === 0) return true
+    if (!items.length) return true
     try {
       const res = await axios.post(
         Uploader.picgoAPI.getDeleteAPIUrl(),
-        {
-          list: items
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+        { list: items },
+        { headers: { 'Content-Type': 'application/json' } }
       )
       if (res.status === 200 && res.data.success) {
         DataStore.removeUploadedFileDBItem(items)
         return true
-      } else {
-        return false
       }
+      return false
     } catch (error) {
       console.error(error)
       return false
@@ -113,62 +99,45 @@ export class Commands {
 
   async uploadAllImgInFile(selected = false) {
     const editor = vscode.window.activeTextEditor
-    if (editor) {
-      const document = editor.document
-      let text = document.getText()
-      if (selected) {
-        if (editor.selection.isEmpty) {
-          return
-        }
-        text = document.getText(editor.selection)
-      }
-      const textLength = text.length
-      const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
-      let match
-      const uploadedImages: { [key: string]: string } = {}
-      const matches = []
-      while ((match = regex.exec(text)) !== null) {
-        matches.push(match)
-      }
-      for (const match of matches) {
-        const imgSyntax = match[0]
-        const url = match[2] || match[4] || match[5] || match[7]
-        if (url) {
-          let res: string | undefined
-          if (uploadedImages[url]) {
-            res = uploadedImages[url]
+    if (!editor) return
+    const document = editor.document
+    let text = selected && !editor.selection.isEmpty ? document.getText(editor.selection) : document.getText()
+    const textLength = text.length
+    const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
+    let match
+    const uploadedImages: { [key: string]: string } = {}
+    const matches = []
+    while ((match = regex.exec(text)) !== null) matches.push(match)
+    for (const match of matches) {
+      const imgSyntax = match[0]
+      const url = match[2] || match[4] || match[5] || match[7]
+      if (url) {
+        let res: string | undefined = uploadedImages[url]
+        if (!res) {
+          if (isURL(url)) {
+            res = await this.uploadCommand([url], true, false, true)
           } else {
-            if (isURL(url)) {
-              res = await this.uploadCommand([url], true, false, true)
-            } else {
-              const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
-              if (fs.existsSync(localPath)) {
-                res = await this.uploadCommand([localPath], true, false, true)
-              }
-            }
-            if (res) {
-              uploadedImages[url] = res
+            const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
+            if (fs.existsSync(localPath)) {
+              res = await this.uploadCommand([localPath], true, false, true)
             }
           }
-          if (res) {
-            text = text.replace(imgSyntax, res)
-          }
+          if (res) uploadedImages[url] = res
         }
+        if (res) text = text.replace(imgSyntax, res)
       }
-      const range =
-        selected && !editor.selection.isEmpty
-          ? editor.selection
-          : new vscode.Range(document.positionAt(0), document.positionAt(textLength))
-      editor.edit(editBuilder => {
-        editBuilder.replace(range, text)
-      })
     }
+    const range =
+      selected && !editor.selection.isEmpty
+        ? editor.selection
+        : new vscode.Range(document.positionAt(0), document.positionAt(textLength))
+    editor.edit(editBuilder => {
+      editBuilder.replace(range, text)
+    })
   }
 
   async uploadSelectedImg() {
     const editor = vscode.window.activeTextEditor
-    if (editor) {
-      await this.uploadAllImgInFile(true)
-    }
+    if (editor) await this.uploadAllImgInFile(true)
   }
 }
