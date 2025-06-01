@@ -1,6 +1,6 @@
 # vs-piclist
 
-> The VSCode extension of [PicList](https://github.com/Kuingsmile/PicList).
+> A powerful VSCode extension for seamless image management, powered by [PicList](https://github.com/Kuingsmile/PicList).
 
 [![version](https://img.shields.io/vscode-marketplace/v/Kuingsmile.vs-piclist.svg?style=flat-square&label=vscode%20marketplace)](https://marketplace.visualstudio.com/items?itemName=Kuingsmile.vs-piclist)
 ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Kuingsmile.vs-piclist?style=flat-square)
@@ -9,64 +9,64 @@
 
 ## Overview
 
-`vs-piclist` is a feature-rich VSCode extension designed for seamless image management. This extension enables you to easily upload images to a remote hosting service and automatically insert the generated URL into your currently active file.
+`vs-piclist` is a feature-rich VSCode extension for effortless image uploading and management. Upload images to remote hosting services and automatically insert the generated URLs into your files.
 
-What sets `vs-piclist` apart from other solutions is its robust set of features, including image compression, watermarking, and other advanced image processing capabilities.
+Unlike other solutions, `vs-piclist` offers advanced features such as image compression, watermarking, and flexible image processing.
 
 ### Prerequisites
 
-Before you can make use of `vs-piclist`, you must first install the desktop software, [PicList](https://github.com/Kuingsmile/PicList), or the [PicList-Core](https://github.com/Kuingsmile/piclist-core).
+Install [PicList](https://github.com/Kuingsmile/PicList) desktop app or [PicList-Core](https://github.com/Kuingsmile/piclist-core) before using this extension.
 
-### Competitive Edge
+### Why vs-piclist?
 
-While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exist, which rely on [PicGo-Core](https://github.com/PicGo/PicGo-Core), `vs-piclist` offers a broader range of functionalities, providing a more comprehensive solution for your image management needs.
+While alternatives like [vs-picgo](https://github.com/PicGo/vs-picgo) exist (based on [PicGo-Core](https://github.com/PicGo/PicGo-Core)), `vs-piclist` provides a broader set of features for comprehensive image management.
 
 ## Features
 
-- **Effortless Uploads**: With just a few clicks, upload images to your preferred remote image hosting service.
-- **Upload on Drag-and-Drop**: Drag-and-drop images from your file explorer directly into your working file.
-- **Upload All**: Upload all images in a file.
-- **Upload Selected**: Right-click to upload selected images.
-- **Auto-Insert URLs**: The extension takes care of inserting the image URL directly into your working file.
-- **Image Management**: Easily delete images stored in your remote hosting service directly through PicList in VSCode.
-- **Advanced Image Processing**: Includes support for image compression, watermarking, and other post-upload manipulations.
-- **Remote Server Mode**: Supports the use of PicList and piclist-core services running on a server or remote machine.
+- **Easy Uploads**: Upload images to your preferred hosting service in just a few clicks.
+- **Drag-and-Drop Support**: Drag images from your file explorer directly into your editor to upload.
+- **Upload All Images**: Upload every image in the current file.
+- **Upload Selected Images**: Right-click to upload only selected images.
+- **Auto URL Insertion**: Automatically insert image URLs into your file after upload.
+- **Image Management**: Delete images from your remote hosting service directly within VSCode.
+- **Advanced Processing**: Supports image compression, watermarking, and more.
+- **Remote Server Mode**: Upload via PicList or PicList-Core running on a remote server.
 
-### Gif Demo
+### Demo
 
 <details>
-<summary>Uploading an image from clipboard</summary>
+<summary>Upload from clipboard</summary>
 <img src="https://s2.loli.net/2023/08/31/XvZrtgiuWwLYIHy.gif" alt="clipboard.gif">
 </details>
 
 <details>
-<summary>Uploading images from explorer</summary>
+<summary>Upload from explorer</summary>
 <img src="https://s2.loli.net/2023/08/31/npvwQoT4Ucr5mPN.gif" alt="explorer.gif">
 </details>
 
 <details>
-<summary>Uploading images from local path or URL</summary>
+<summary>Upload from local path or URL</summary>
 <img src="https://s2.loli.net/2023/08/31/tAW54rVFhO2KSTo.gif" alt="input box.gif">
 </details>
 
 <details>
-<summary>Uploading images on Drag-and-Drop</summary>
-<img src="https://s2.loli.net/2023/09/01/rflXoJLsR5heDqK.gif" alt="input box.gif">
+<summary>Drag-and-drop upload</summary>
+<img src="https://s2.loli.net/2023/09/01/rflXoJLsR5heDqK.gif" alt="drag-and-drop.gif">
 </details>
 
 <details>
-<summary>Delete images in your remote hosting service</summary>
-<img src="https://s2.loli.net/2023/09/01/8oYzJinhgajLfdI.gif" alt="input box.gif">
+<summary>Delete images from remote hosting</summary>
+<img src="https://s2.loli.net/2023/09/01/8oYzJinhgajLfdI.gif" alt="delete.gif">
 </details>
 
 <details>
 <summary>Upload all images in a file</summary>
-<img src="https://s2.loli.net/2024/06/16/9JDyICxZ3mUEBio.gif" alt="input box.gif">
+<img src="https://s2.loli.net/2024/06/16/9JDyICxZ3mUEBio.gif" alt="upload-all.gif">
 </details>
 
 <details>
-<summary>Upload selected images in a file by right click</summary>
-<img src="https://s2.loli.net/2024/06/16/GUVjraIWTuX2wgn.gif" alt="input box.gif">
+<summary>Upload selected images by right-click</summary>
+<img src="https://s2.loli.net/2024/06/16/GUVjraIWTuX2wgn.gif" alt="upload-selected.gif">
 </details>
 
 ## Settings
@@ -75,17 +75,17 @@ While similar extensions like [vs-picgo](https://github.com/PicGo/vs-picgo) exis
 
 ### Upload API URL
 
-This is the upload api URL of PicList, default is `http://127.0.0.1:36677/upload`, refer to [PicList Server](https://piclist.cn/en/advanced.html#use-of-built-in-server)
+The PicList upload API endpoint. Default: `http://127.0.0.1:36677/upload`. See [PicList Server](https://piclist.cn/en/advanced.html#use-of-built-in-server).
 
 ### Delete API URL
 
-This is the delete api URL of PicList, default is `http://127.0.0.1:36677/delete`, refer to [PicList Server](https://piclist.cn/en/advanced.html#use-of-built-in-server)
+The PicList delete API endpoint. Default: `http://127.0.0.1:36677/delete`. See [PicList Server](https://piclist.cn/en/advanced.html#use-of-built-in-server).
 
 ### Copy Type
 
-Default is markdown.
+Default: markdown.
 
-| type     | format                  |
+| Type     | Format                  |
 | -------- | ----------------------- |
 | url      | `url`                   |
 | markdown | `![alt](url)`           |
@@ -95,19 +95,19 @@ Default is markdown.
 
 ### Custom Type
 
-Default is `![$filename]($url)`.
+Default: `![$filename]($url)`.
 
 ### Encode URL
 
-Whether to encode URL when insert text. Default is `false`.
+Whether to encode the URL when inserting text. Default: `false`.
 
-### Enable upload on drop
+### Enable Upload on Drop
 
-Whether to enable upload on drop.Default is `true`.
+Enable or disable upload on drag-and-drop. Default: `true`.
 
 ### Remote Server Mode
 
-When you deploy Piclist or Piclist-Core service on a server or other machine, you can enable remote server mode, and then upload requests will be initiated by sending files.
+Enable when using PicList or PicList-Core on a remote server. Uploads will be sent as files.
 
 ## Contributors
 
