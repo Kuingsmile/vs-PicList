@@ -1,11 +1,12 @@
-import * as vscode from 'vscode'
-import { showError, getRemoteServerMode, getFileName } from './utils'
 import axios from 'axios'
-import { Editor } from './Editor'
-import { handleUrlEncode } from '../utils'
-import { DataStore } from './db'
 import FormData from 'form-data'
 import fs from 'fs-extra'
+import * as vscode from 'vscode'
+
+import { handleUrlEncode } from '../utils'
+import { DataStore } from './db'
+import { Editor } from './Editor'
+import { getFileName, getRemoteServerMode, showError } from './utils'
 
 export class Uploader {
   static picgoAPI = new Uploader()

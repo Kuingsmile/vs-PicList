@@ -1,7 +1,8 @@
 import * as vscode from 'vscode'
+
+import { extractUrl } from './utils'
 import { Commands } from './vscode/commands'
 import { DataStore } from './vscode/db'
-import { extractUrl } from './utils'
 import { UploadonDropProvider } from './vscode/dropProvider'
 
 export async function activate(context: vscode.ExtensionContext) {

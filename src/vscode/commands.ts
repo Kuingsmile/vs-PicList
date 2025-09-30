@@ -1,13 +1,15 @@
+import * as path from 'node:path'
+
+import axios from 'axios'
 import fs from 'fs-extra'
-import * as path from 'path'
 import * as vscode from 'vscode'
+
+import { isURL } from '../utils'
+import getClipboardImage from './clipboard/getClipboardImage'
+import { DataStore, IStringKeyObject } from './db'
 import { Editor } from './Editor'
 import { Uploader } from './uploader'
 import { getRemoteServerMode, showError } from './utils'
-import { isURL } from '../utils'
-import { DataStore, IStringKeyObject } from './db'
-import axios from 'axios'
-import getClipboardImage from './clipboard/getClipboardImage'
 
 export class Commands {
   static commandManager: Commands = new Commands()

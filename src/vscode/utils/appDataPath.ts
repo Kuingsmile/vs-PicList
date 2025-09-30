@@ -1,5 +1,5 @@
-import { platform, homedir } from 'os'
-import { join } from 'path'
+import { homedir, platform } from 'node:os'
+import { join } from 'node:path'
 
 function getForWindows() {
   return join(homedir(), 'AppData', 'Roaming')

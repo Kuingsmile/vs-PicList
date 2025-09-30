@@ -1,13 +1,15 @@
+import { spawn } from 'node:child_process'
+import os from 'node:os'
+import path from 'node:path'
+
+import dayjs from 'dayjs'
+import fs from 'fs-extra'
+
+import { getAppDataPath } from '../utils/appDataPath'
+import linuxClipboardScript from './linux.sh'
 import macClipboardScript from './mac.applescript'
 import windowsClipboardScript from './windows.ps1'
 import windows10ClipboardScript from './windows10.ps1'
-import linuxClipboardScript from './linux.sh'
-import os from 'os'
-import { getAppDataPath } from '../utils/appDataPath'
-import path from 'path'
-import fs from 'fs-extra'
-import dayjs from 'dayjs'
-import { spawn } from 'child_process'
 
 type Platform = 'darwin' | 'win32' | 'win10' | 'linux'
 

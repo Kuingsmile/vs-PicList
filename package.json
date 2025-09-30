@@ -10,6 +10,7 @@
     "url": "https://github.com/Kuingsmile/vs-piclist/issues",
     "email": "pkukuing@gmail.com"
   },
+  "type": "module",
   "keywords": [
     "image",
     "picture",
@@ -23,7 +24,7 @@
   "version": "1.3.2",
   "publisher": "Kuingsmile",
   "engines": {
-    "vscode": "^1.81.0"
+    "vscode": "^1.100.0"
   },
   "categories": [
     "Other"
@@ -163,7 +164,7 @@
     "compile": "webpack",
     "compile-tests": "tsc -p . --outDir out",
     "cz": "git-cz",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "package": "webpack --mode production --devtool hidden-source-map",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "release": "bump-version",
@@ -173,54 +174,45 @@
     "watch-tests": "tsc -p . -w --outDir out"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.1",
-    "@picgo/bump-version": "^1.1.2",
+    "node-bump-version": "^2.0.0",
     "@types/fs-extra": "^11.0.4",
-    "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "20.14.2",
-    "@types/vscode": "^1.81.0",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
-    "@vscode/test-electron": "^2.3.8",
-    "conventional-changelog": "^5.0.0",
-    "cz-customizable": "^7.0.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
-    "glob": "^8.1.0",
-    "husky": "^3.1.0",
-    "mocha": "^10.2.0",
-    "prettier": "^3.3.2",
-    "ts-loader": "^9.4.4",
-    "typescript": "^5.2.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "@types/node": "24.6.0",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unicorn": "^61.0.2",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.36.0",
+    "prettier": "^3.6.2",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.8.2",
+    "webpack": "^5.102.0",
+    "webpack-cli": "^6.0.1",
+    "@eslint/js": "^9.36.0",
+    "typescript-eslint": "^8.45.0"
   },
   "dependencies": {
     "@picgo/store": "2.1.0",
-    "axios": "1.9.0",
-    "dayjs": "^1.11.13",
-    "form-data": "^4.0.0",
-    "fs-extra": "^11.3.0",
+    "axios": "1.12.2",
+    "dayjs": "^1.11.18",
+    "form-data": "^4.0.4",
+    "fs-extra": "^11.3.2",
     "raw-loader": "^4.0.2"
-  },
-  "commitlint": {
-    "extends": [
-      "./node_modules/@picgo/bump-version/commitlint-picgo"
-    ]
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
     },
     "cz-customizable": {
-      "config": "./node_modules/@picgo/bump-version/.cz-config.js"
+      "config": "./node_modules/node-bump-version/.cz-config.cjs"
     }
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+  "commitlint": {
+    "extends": [
+      "./node_modules/node-bump-version/dist/commitlint-node/index.js"
+    ]
   }
 }

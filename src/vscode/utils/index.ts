@@ -1,4 +1,5 @@
 import vscode, { window } from 'vscode'
+
 import { IMessageToShow } from '../../utils'
 import { getNLSText } from '../../utils/meta'
 

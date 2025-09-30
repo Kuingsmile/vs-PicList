@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+
 import { Commands } from './commands'
 
 const uriListMime = 'text/uri-list'
@@ -11,7 +12,7 @@ export class UploadonDropProvider implements vscode.DocumentDropEditProvider {
     token: vscode.CancellationToken
   ): Promise<vscode.DocumentDropEdit | undefined> {
     const enable = vscode.workspace
-      ? vscode.workspace.getConfiguration('piclist').get('enableDragUpload') ?? true
+      ? (vscode.workspace.getConfiguration('piclist').get('enableDragUpload') ?? true)
       : true
     if (!enable) return undefined
     const dataTransferItem = dataTransfer.get(uriListMime)
