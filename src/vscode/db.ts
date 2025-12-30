@@ -4,9 +4,7 @@ import fs from 'fs-extra'
 
 import { getAppDataPath } from './utils/appDataPath'
 
-export interface IStringKeyObject {
-  [key: string]: any
-}
+export type IStringKeyObject = Record<string, any>
 
 export class DataStore {
   static dataStore: DataStore = new DataStore()

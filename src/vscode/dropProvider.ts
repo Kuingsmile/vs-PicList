@@ -9,7 +9,7 @@ export class UploadonDropProvider implements vscode.DocumentDropEditProvider {
     _document: vscode.TextDocument,
     _position: vscode.Position,
     dataTransfer: vscode.DataTransfer,
-    token: vscode.CancellationToken
+    token: vscode.CancellationToken,
   ): Promise<vscode.DocumentDropEdit | undefined> {
     const enable = vscode.workspace
       ? (vscode.workspace.getConfiguration('piclist').get('enableDragUpload') ?? true)

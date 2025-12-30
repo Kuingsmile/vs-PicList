@@ -22,21 +22,21 @@ const extensionConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',
     libraryTarget: 'module',
-    chunkFormat: 'module'
+    chunkFormat: 'module',
   },
   experiments: {
-    outputModule: true
+    outputModule: true,
   },
   externals: {
-    vscode: 'module vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
+    vscode: 'module vscode', // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
     // modules added here also need to be added in the .vscodeignore file
   },
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js'],
     extensionAlias: {
-      '.js': ['.js', '.ts']
-    }
+      '.js': ['.js', '.ts'],
+    },
   },
   module: {
     rules: [
@@ -45,19 +45,19 @@ const extensionConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
-          }
-        ]
+            loader: 'ts-loader',
+          },
+        ],
       },
       {
         test: /\.(applescript|ps1|sh)$/,
-        use: 'raw-loader'
-      }
-    ]
+        use: 'raw-loader',
+      },
+    ],
   },
   devtool: 'nosources-source-map',
   infrastructureLogging: {
-    level: 'log' // enables logging required for problem matchers
-  }
+    level: 'log', // enables logging required for problem matchers
+  },
 }
 export default [extensionConfig]

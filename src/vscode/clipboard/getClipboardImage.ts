@@ -21,18 +21,18 @@ function getCurrentPlatform(): Platform {
   return platform === 'darwin' ? 'darwin' : 'linux'
 }
 
-const platform2ScriptContent: { [key in Platform]: string } = {
+const platform2ScriptContent: Record<Platform, string> = {
   darwin: macClipboardScript,
   win32: windowsClipboardScript,
   win10: windows10ClipboardScript,
-  linux: linuxClipboardScript
+  linux: linuxClipboardScript,
 }
 
-const platform2ScriptFilename: { [key in Platform]: string } = {
+const platform2ScriptFilename: Record<Platform, string> = {
   darwin: 'mac.applescript',
   win32: 'windows.ps1',
   win10: 'windows10.ps1',
-  linux: 'linux.sh'
+  linux: 'linux.sh',
 }
 
 interface IClipboardImage {
@@ -74,7 +74,7 @@ const getClipboardImage = async (): Promise<IClipboardImage> => {
         'unrestricted',
         '-file',
         scriptPath,
-        imagePath
+        imagePath,
       ])
     } else {
       execution = spawn('sh', [scriptPath, imagePath])

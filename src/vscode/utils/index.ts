@@ -20,7 +20,7 @@ export const showInfo = async (message: string) =>
     {
       location: vscode.ProgressLocation.Notification,
       title: 'message',
-      cancellable: false
+      cancellable: false,
     },
     async progress => {
       for (let i = 0; i < 10; i++) {
@@ -28,7 +28,7 @@ export const showInfo = async (message: string) =>
           progress.report({ increment: i * 10, message })
         }, 100000)
       }
-    }
+    },
   )
 
 export const showMessage = (messageToShow: IMessageToShow) => {
@@ -59,7 +59,7 @@ export function getFileName(item: string, selectedText?: string, getFileNameFrom
       const url = new URL(item)
       const pathSep = url.pathname.includes('/') ? '/' : '\\'
       fileName = decodeURIComponent(url.pathname.split(pathSep).pop() || '') || ''
-    } catch (error) {}
+    } catch (_e) {}
   }
   return fileName || ''
 }

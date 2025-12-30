@@ -8,21 +8,21 @@ import { UploadonDropProvider } from './vscode/dropProvider'
 export async function activate(context: vscode.ExtensionContext) {
   const selector: vscode.DocumentSelector = {
     language: '*',
-    scheme: 'file'
+    scheme: 'file',
   }
   const disposable = [
     vscode.commands.registerCommand(
       'piclist.uploadFromClipboard',
-      async () => await Commands.commandManager.uploadImageFromClipboard()
+      async () => await Commands.commandManager.uploadImageFromClipboard(),
     ),
     vscode.commands.registerCommand(
       'piclist.uploadFromExplorer',
-      async () => await Commands.commandManager.uploadImageFromExplorer()
+      async () => await Commands.commandManager.uploadImageFromExplorer(),
     ),
     vscode.commands.registerCommand('piclist.openImageDB', async () => await Commands.commandManager.openImageDB()),
     vscode.commands.registerCommand(
       'piclist.uploadFromInputBox',
-      async () => await Commands.commandManager.uploadImageFromInputBox()
+      async () => await Commands.commandManager.uploadImageFromInputBox(),
     ),
     vscode.commands.registerCommand('piclist.deleteImage', async () => {
       const editor = vscode.window.activeTextEditor
@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
     }),
     vscode.commands.registerCommand('piclist.uploadAllImgInFile', async () => {
       await Commands.commandManager.uploadAllImgInFile()
-    })
+    }),
   ]
   context.subscriptions.push(...disposable)
   context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider(selector, new UploadonDropProvider()))

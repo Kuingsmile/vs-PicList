@@ -18,7 +18,7 @@ export class Commands {
     input?: string[],
     shouldKeepAfterUploading = true,
     writeToEditor = true,
-    getFileNameFromRes = false
+    getFileNameFromRes = false,
   ) {
     const output = await Uploader.picgoAPI.upload(input, getFileNameFromRes)
     if (!output) return
@@ -42,7 +42,7 @@ export class Commands {
   async uploadImageFromExplorer() {
     const result = await vscode.window.showOpenDialog({
       filters: { Images: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'svg'] },
-      canSelectMany: true
+      canSelectMany: true,
     })
     if (result) {
       const input = result.map(item => path.resolve(item.fsPath))
@@ -86,7 +86,7 @@ export class Commands {
       const res = await axios.post(
         Uploader.picgoAPI.getDeleteAPIUrl(),
         { list: items },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       )
       if (res.status === 200 && res.data.success) {
         DataStore.removeUploadedFileDBItem(items)
@@ -107,7 +107,7 @@ export class Commands {
     const textLength = text.length
     const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
     let match
-    const uploadedImages: { [key: string]: string } = {}
+    const uploadedImages: Record<string, string> = {}
     const matches = []
     while ((match = regex.exec(text)) !== null) matches.push(match)
     for (const match of matches) {

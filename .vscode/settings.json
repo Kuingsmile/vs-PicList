@@ -8,12 +8,59 @@
     "out": true, // set this to false to include "out" folder in search results
     "dist": true // set this to false to include "dist" folder in search results
   },
+  "eslint.run": "onSave",
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.format.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.stylelint": "always"
+    },
+    "editor.formatOnSave": false
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "vue", "typescript", "typescriptreact", "json", "jsonc"],
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
   "typescript.tsc.autoDetect": "off",
   "files.trimTrailingWhitespace": true,
   "editor.formatOnSave": false,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
   "eslint.enable": true,
   "editor.tabSize": 2,
   "typescript.tsdk": "node_modules/typescript/lib"

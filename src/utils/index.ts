@@ -29,7 +29,7 @@ export function extractUrl(str: string): string[] {
     /!\[.*?\]\((.*?)\)/g,
     /<img src="(.*?)" alt=".*?">/g,
     /(https?:\/\/[^\s]+)/g,
-    /\[img\](.*?)\[\/img\]/g
+    /\[img\](.*?)\[\/img\]/g,
   ]
 
   const urls = new Set<string>()

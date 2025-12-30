@@ -45,19 +45,19 @@ export class Uploader {
         const formData = new FormData()
         input!.forEach(item => formData.append('file', fs.createReadStream(item)))
         res = await axios.post(this.getUploadAPIUrl(), formData, {
-          headers: { ...formData.getHeaders() }
+          headers: { ...formData.getHeaders() },
         })
       } else {
         res = await axios.post(
           this.getUploadAPIUrl(),
           { list: input || [] },
-          { headers: { 'Content-Type': 'application/json' } }
+          { headers: { 'Content-Type': 'application/json' } },
         )
       }
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
         const output = res.data.result.map((item: string) =>
-          this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes))
+          this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes)),
         )
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)
