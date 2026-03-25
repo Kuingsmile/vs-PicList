@@ -33,7 +33,7 @@
     "onLanguage:plaintext",
     "onLanguage:markdown"
   ],
-  "main": "./dist/extension.js",
+  "main": "./dist/extension.cjs",
   "contributes": {
     "commands": [
       {
