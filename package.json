@@ -130,6 +130,20 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%config.enableDragUpload.description%"
+        },
+        "piclist.skipRemoteImages": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.skipRemoteImages.description%"
+        },
+        "piclist.uploadSourceFormats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["markdown", "html", "url", "ubb"]
+          },
+          "default": ["markdown"],
+          "markdownDescription": "%config.uploadSourceFormats.description%"
         }
       }
     },
@@ -191,7 +205,7 @@
     "@eslint/js": "^10.0.1",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "25.5.0",
-    "@types/vscode": "^1.110.0",
+    "@types/vscode": "^1.100.0",
     "@typescript-eslint/eslint-plugin": "^8.57.2",
     "@typescript-eslint/parser": "^8.57.2",
     "@vscode/test-electron": "^2.5.2",

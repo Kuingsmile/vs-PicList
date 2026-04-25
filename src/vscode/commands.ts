@@ -25,7 +25,12 @@ export class Commands {
     if (!shouldKeepAfterUploading && input) fs.removeSync(input[0])
     if (writeToEditor) {
       vscode.env.clipboard.writeText(output)
-      await Editor.writeToEditor(output)
+      // 先嘗試偵測游標所在行是否已有 ![alt](url) 結構
+      // 若有，僅替換 URL 保留 alt text；否則走原本整段插入邏輯
+      const replaced = await Uploader.picgoAPI.replaceUrlInCurrentLine(output)
+      if (!replaced) {
+        await Editor.writeToEditor(output)
+      }
     }
     return output
   }
@@ -105,21 +110,31 @@ export class Commands {
     const document = editor.document
     let text = selected && !editor.selection.isEmpty ? document.getText(editor.selection) : document.getText()
     const textLength = text.length
-    const regex = /(!\[.*?\]\((.*?)\))|(<img[^>]*src="(.*?)"[^>]*>)|(https?:\/\/[^\s]+)|(\[img\](.*?)\[\/img\])/g
+    const config = vscode.workspace.getConfiguration('piclist')
+    const formats: string[] = config.get('uploadSourceFormats') ?? ['markdown']
+    const parts: string[] = []
+    if (formats.includes('markdown')) parts.push(String.raw`(?:!\[.*?\]\((?<md>[^)]*)\))`)
+    if (formats.includes('html'))     parts.push(String.raw`(?:<img[^>]*src="(?<html>[^"]*)"[^>]*>)`)
+    if (formats.includes('url'))      parts.push(String.raw`(?<url>https?:\/\/[^\s]+)`)
+    if (formats.includes('ubb'))      parts.push(String.raw`(?:\[img\](?<ubb>[^\[]*)\[\/img\])`)
+    if (parts.length === 0) return
+    const regex = new RegExp(parts.join('|'), 'g')
     let match
     const uploadedImages: Record<string, string> = {}
     const matches = []
     while ((match = regex.exec(text)) !== null) matches.push(match)
     for (const match of matches) {
       const imgSyntax = match[0]
-      const url = match[2] || match[4] || match[5] || match[7]
+      const url = match.groups?.md ?? match.groups?.html ?? match.groups?.url ?? match.groups?.ubb
       if (url) {
         let res: string | undefined = uploadedImages[url]
         if (!res) {
+          const skipRemote: boolean = config.get('skipRemoteImages') ?? true
           if (isURL(url)) {
-            res = await this.uploadCommand([url], true, false, true)
+            if (!skipRemote) res = await this.uploadCommand([url], true, false, true)
           } else {
-            const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
+            const decodedUrl = decodeURIComponent(url)
+            const localPath = path.isAbsolute(decodedUrl) ? decodedUrl : path.join(document.uri.fsPath, '../', decodedUrl)
             if (fs.existsSync(localPath)) {
               res = await this.uploadCommand([localPath], true, false, true)
             }

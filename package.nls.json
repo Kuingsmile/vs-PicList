@@ -20,5 +20,7 @@
   "config.customType.description": "Custom copy format. Default: `Markdown: ![$fileName]($url)`. Placeholders: `$fileName`, `$url`.",
   "config.encodeUrl.description": "Encode the copied URL before output. Default: `false`.",
   "config.remoteServerMode.description": "Enable uploads through a remote server. Default: `false`.",
-  "config.enableDragUpload.description": "Enable drag-and-drop uploads. Default: `true`."
+  "config.enableDragUpload.description": "Enable drag-and-drop uploads. Default: `true`.",
+  "config.skipRemoteImages.description": "Skip images that already have a remote URL (http/https) when uploading all images in file. Default: `true`.",
+  "config.uploadSourceFormats.description": "Formats to scan when uploading all images in file. Options: `markdown` (![](url)), `html` (<img>), `url` (bare https://...), `ubb` ([img]url[/img]). Default: `[\"markdown\"]`."
 }

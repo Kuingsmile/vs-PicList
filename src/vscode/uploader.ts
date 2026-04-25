@@ -56,8 +56,10 @@ export class Uploader {
       }
       if (res.status === 200 && res.data.success) {
         const selectedText = Editor.editor?.document.getText(Editor.editor.selection)
+        // 嘗試從游標所在行讀取既有的 alt text（格式：![alt text](url 或空白)）
+        const existingAltText = this.getExistingAltText()
         const output = res.data.result.map((item: string) =>
-          this.formatOutput(item, getFileName(item, selectedText, getFileNameFromRes)),
+          this.formatOutput(item, getFileName(item, existingAltText || selectedText, getFileNameFromRes)),
         )
         const outputStr = output.join('\n')
         DataStore.writeUploadedFileDB(res.data.fullResult)
@@ -67,9 +69,50 @@ export class Uploader {
         return ''
       }
     } catch (e: any) {
-      showError(String(e))
+      await showError(String(e))
       return ''
     }
+  }
+
+  // 讀取游標所在行，偵測是否已有 ![alt text]() 或 ![alt text](現有url) 結構
+  // 若有，回傳 alt text；若無，回傳空字串
+  getExistingAltText(): string {
+    const editor = Editor.editor
+    if (!editor) return ''
+    const line = editor.document.lineAt(editor.selection.active.line).text
+    // 比對 ![任意內容](任意內容或空白) 的格式
+    const match = line.match(/!\[([^\]]*)\]\([^)]*\)/)
+    if (match) {
+      return match[1] // 回傳 [] 內的文字
+    }
+    return ''
+  }
+
+  // 若游標所在行已有 ![alt](舊url) 結構，則僅替換 () 內的 URL，不整行覆蓋
+  async replaceUrlInCurrentLine(newMarkdown: string): Promise<boolean> {
+    const editor = Editor.editor
+    if (!editor) return false
+    const lineIndex = editor.selection.active.line
+    const line = editor.document.lineAt(lineIndex).text
+    const mdRegex = /!\[([^\]]*)\]\([^)]*\)/
+    if (mdRegex.test(line)) {
+      // 從 newMarkdown 取出新 URL
+      const newUrlMatch = newMarkdown.match(/!\[[^\]]*\]\(([^)]+)\)/)
+      const newAltMatch = newMarkdown.match(/!\[([^\]]*)\]/)
+      if (!newUrlMatch) return false
+      const newUrl = newUrlMatch[1]
+      // 保留原始行的 alt text，不使用上傳結果的 fileName
+      const origAltMatch = line.match(/!\[([^\]]*)\]/)
+      const origAlt = origAltMatch ? origAltMatch[1] : (newAltMatch ? newAltMatch[1] : '')
+      const updatedLine = line.replace(mdRegex, `![${origAlt}](${newUrl})`)
+      const range = new vscode.Range(
+        new vscode.Position(lineIndex, 0),
+        new vscode.Position(lineIndex, line.length),
+      )
+      await editor.edit(editBuilder => editBuilder.replace(range, updatedLine))
+      return true
+    }
+    return false
   }
 
   formatOutput(url: string, fileName: string): string {
