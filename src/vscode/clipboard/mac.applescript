@@ -1,3 +1,4 @@
+-- From https://github.com/mushanshitiancai/vscode-paste-image
 property fileTypes : {{«class PNGf», ".png"}}
 
 on run argv

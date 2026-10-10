@@ -1,13 +1,10 @@
-.vscode/**
-.vscode-test/**
-out/**
-node_modules/**
-src/**
-.gitignore
-.yarnrc
-webpack.config.js
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/.eslintrc.json
-**/*.map
-**/*.ts
+# Include only the bundled runtime, extension metadata, and public documentation.
+**
+!dist/extension.js
+!package.json
+!package.nls.json
+!logo.png
+!LICENSE
+!README.md
+!README_cn.md
+!CHANGELOG.md

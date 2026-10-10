@@ -27,18 +27,19 @@
   "type": "module",
   "main": "./dist/extension.js",
   "scripts": {
-    "compile": "webpack",
-    "compile-tests": "tsc -p . --outDir out",
+    "compile": "yarn run typecheck && rolldown -c",
     "cz": "git-cz",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
-    "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "package": "yarn run typecheck && rolldown -c --minify --sourcemap hidden",
+    "prepare": "husky",
     "release": "bump-version",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint:fix",
-    "test": "node ./out/test/runTest.js",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
     "vscode:prepublish": "yarn run package",
-    "watch": "webpack --watch",
-    "watch-tests": "tsc -p . -w --outDir out"
+    "watch": "rolldown -c --watch"
   },
   "contributes": {
     "commands": [
@@ -167,53 +168,51 @@
     "onLanguage:plaintext",
     "onLanguage:markdown"
   ],
-  "commitlint": {
-    "extends": [
-      "./node_modules/node-bump-version/dist/commitlint-node/index.js"
-    ]
-  },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-customizable"
+      "path": "cz-customizable"
     },
     "cz-customizable": {
-      "config": "./node_modules/node-bump-version/.cz-config.cjs"
+      "config": ".cz-config.cjs"
     }
   },
   "dependencies": {
-    "axios": "1.13.6",
-    "dayjs": "^1.11.20",
-    "form-data": "^4.0.5",
-    "fs-extra": "^11.3.4",
-    "raw-loader": "^4.0.2"
+    "axios": "^1.20.0",
+    "dayjs": "^1.11.23",
+    "form-data": "^4.0.6",
+    "fs-extra": "^11.4.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
     "@eslint/js": "^10.0.1",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "25.5.0",
-    "@types/vscode": "^1.110.0",
-    "@typescript-eslint/eslint-plugin": "^8.57.2",
-    "@typescript-eslint/parser": "^8.57.2",
-    "@vscode/test-electron": "^2.5.2",
-    "eslint": "^10.1.0",
+    "@types/node": "^22.20.5",
+    "@types/vscode": "~1.100.0",
+    "commitizen": "^4.3.2",
+    "cz-customizable": "^7.5.4",
+    "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsonc": "^3.1.2",
-    "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-unicorn": "^63.0.0",
-    "jsonc-eslint-parser": "^3.1.0",
-    "node-bump-version": "^2.0.0",
-    "prettier": "^3.8.1",
-    "ts-loader": "^9.5.4",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.2",
-    "webpack": "^5.105.4",
-    "webpack-cli": "^7.0.2"
+    "eslint-plugin-jsonc": "^3.4.2",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "eslint-plugin-unicorn": "^77.0.0",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "node-bump-version": "^3.0.0",
+    "prettier": "^3.9.10",
+    "rolldown": "1.2.13",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.1"
   },
+  "packageManager": "yarn@1.22.22",
   "engines": {
+    "node": "^22.13.0 || >=24.0.0",
     "vscode": "^1.100.0"
   },
   "icon": "logo.png",
+  "bumpVersion": {
+    "preset": "emoji"
+  },
   "extensionKind": [
     "ui"
   ]

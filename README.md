@@ -109,6 +109,25 @@ Enable or disable upload on drag-and-drop. Default: `true`.
 
 Enable when using PicList or PicList-Core on a remote server. Uploads will be sent as files.
 
+## Development
+
+Use Node.js 22.13 or later in the 22.x line, or Node.js 24+, with Yarn 1.22.22.
+
+```sh
+yarn install
+yarn typecheck
+yarn lint
+yarn format:check
+yarn compile
+yarn package
+```
+
+Rolldown bundles the extension and its clipboard scripts into `dist/extension.js`. `yarn compile` includes a source map;
+`yarn package` minifies the bundle and generates a hidden source map. Both commands check TypeScript before building.
+
+Press F5 in VS Code to build and debug the extension. The default build task runs `yarn watch` and `yarn typecheck:watch`
+together so changes are bundled and checked as you work.
+
 ## Contributors
 
 - [Kuingsmile](https://github.com/Kuingsmile)

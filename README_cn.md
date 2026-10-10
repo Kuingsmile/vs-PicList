@@ -109,6 +109,25 @@ PicList 删除接口，默认：`http://127.0.0.1:36677/delete`。详见 [PicLis
 
 如在服务器或其他机器部署 PicList 或 PicList-Core，可开启远程模式，上传将以文件方式发送。
 
+### 开发
+
+使用 Node.js 22.13 或更高版本（22.x 系列），或 Node.js 24+，并配合 Yarn 1.22.22。
+
+```sh
+yarn install
+yarn typecheck
+yarn lint
+yarn format:check
+yarn compile
+yarn package
+```
+
+Rolldown 会将扩展及其剪贴板脚本打包到 `dist/extension.js` 中。`yarn compile` 包含源映射；
+`yarn package` 会压缩包并生成隐藏的源映射。两个命令在构建前都会检查 TypeScript。
+
+在 VS Code 中按 F5 构建并调试扩展。默认的构建任务会同时运行 `yarn watch` 和 `yarn typecheck:watch`，
+这样在你工作时更改会被打包并检查。
+
 ## 作者
 
 - [Kuingsmile](https://github.com/Kuingsmile)

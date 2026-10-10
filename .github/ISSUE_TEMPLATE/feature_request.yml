@@ -1,7 +1,7 @@
-name: "✨ Feature Request"
+name: '✨ Feature Request'
 description: 功能请求 / Feature request
-title: "[Feature]: "
-labels: ["feature request"]
+title: '[Feature]: '
+labels: ['feature request']
 assignees:
   - Kuingsmile
 body:

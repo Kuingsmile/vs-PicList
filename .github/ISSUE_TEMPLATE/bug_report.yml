@@ -1,7 +1,7 @@
-name: "🐛 Bug Report"
+name: '🐛 Bug Report'
 description: 提交一个问题 / Report a bug
-title: "[Bug]: "
-labels: ["bug"]
+title: '[Bug]: '
+labels: ['bug']
 assignees:
   - Kuingsmile
 body:

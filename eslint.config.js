@@ -1,36 +1,39 @@
 import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
-import configPrettier from 'eslint-config-prettier'
+import { defineConfig, globalIgnores } from 'eslint/config'
 import jsonc from 'eslint-plugin-jsonc'
 import pluginPrettier from 'eslint-plugin-prettier/recommended'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import pluginUnicorn from 'eslint-plugin-unicorn'
 import globals from 'globals'
-import * as jsoncParser from 'jsonc-eslint-parser'
 import tseslint from 'typescript-eslint'
 
+const jsFiles = ['**/*.{js,jsx,mjs,cjs}']
+const tsFiles = ['**/*.{ts,tsx,mts,cts}']
+const jsoncFiles = ['**/*.jsonc', '**/tsconfig.json', '**/tsconfig.*.json', '**/.vscode/*.json']
+const unusedVarsOptions = {
+  varsIgnorePattern: '^_',
+  args: 'all',
+  argsIgnorePattern: '^_',
+  caughtErrors: 'all',
+  caughtErrorsIgnorePattern: '^_',
+}
+
 export default defineConfig(
+  globalIgnores([
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/out/**',
+    '**/coverage/**',
+    '**/.vscode-test/**',
+    'release/**',
+  ]),
   {
-    ignores: ['**/dist/**', '**/node_modules/**', 'release/**'],
-  },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...tseslint.configs.stylistic,
-  {
-    files: ['**/*.ts', '**/*.d.ts'],
+    name: 'vs-piclist/code',
+    files: [...jsFiles, ...tsFiles],
+    extends: [js.configs.recommended],
     languageOptions: {
-      parser: tseslint.parser,
-      sourceType: 'module',
-      ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        Office: 'readonly',
-      },
+      globals: globals.node,
     },
-  },
-  {
-    files: ['**/*.ts', '**/*.d.ts', '**/*.vue', 'eslint.config.js'],
     plugins: {
       'simple-import-sort': simpleImportSort,
       unicorn: pluginUnicorn,
@@ -49,73 +52,90 @@ export default defineConfig(
       'no-new-wrappers': 'error',
       'no-throw-literal': 'error',
       'no-undef-init': 'error',
+      'no-unused-vars': ['error', unusedVarsOptions],
       'no-var': 'error',
       'object-shorthand': 'error',
       'prefer-const': 'error',
       'prefer-object-spread': 'error',
       'unicode-bom': ['error', 'never'],
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-      'no-unused-vars': 'off',
-      'no-extra-boolean-cast': 'off',
+      'no-debugger': 'error',
+      // Preserve the existing extension's rule exceptions.
+      'no-async-promise-executor': 'off',
       'no-case-declarations': 'off',
       'no-cond-assign': 'off',
       'no-control-regex': 'off',
-      'no-inner-declarations': 'off',
       'no-empty': 'off',
-      // @typescript-eslint/eslint-plugin
-      '@typescript-eslint/no-unused-expressions': 'off',
+      'no-extra-boolean-cast': 'off',
+    },
+  },
+  {
+    name: 'vs-piclist/jsx',
+    files: ['**/*.jsx'],
+    languageOptions: {
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+  },
+  {
+    name: 'vs-piclist/typescript',
+    files: tsFiles,
+    extends: [tseslint.configs.recommended, tseslint.configs.stylistic],
+    rules: {
+      'no-undef': 'off', // TypeScript checks undefined names.
+      '@typescript-eslint/no-unused-vars': ['error', unusedVarsOptions],
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
-      '@typescript-eslint/no-var-requires': 'off',
-      '@typescript-eslint/no-empty-interface': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-empty-object-type': 'off', // {} is a totally useful and valid type.
       '@typescript-eslint/no-require-imports': 'off',
-      '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-this-alias': 'off',
-      // Pending https://github.com/typescript-eslint/typescript-eslint/issues/4820
-      '@typescript-eslint/prefer-optional-chain': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          caughtErrors: 'all',
-          caughtErrorsIgnorePattern: '^_',
-        },
-      ],
-      'vue/no-v-html': 'off',
-      'vue/multi-word-component-names': 'off',
-      'no-undef': 'off', // TypeScript handles this
-      'no-async-promise-executor': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
-  ...jsonc.configs['flat/recommended-with-jsonc'],
   {
-    files: ['**/*.json', '**/*.jsonc', '**/*.json5'],
+    name: 'vs-piclist/commonjs',
+    files: ['**/*.{cjs,cts}'],
     languageOptions: {
-      parser: jsoncParser,
+      sourceType: 'commonjs',
     },
     rules: {
-      'jsonc/array-bracket-spacing': ['error', 'never'],
-      'jsonc/comma-dangle': ['error', 'never'],
-      'jsonc/indent': ['error', 2],
-      'jsonc/no-comments': 'off',
-      'jsonc/quotes': ['error', 'double'],
+      'unicorn/prefer-module': 'off',
     },
   },
-
   {
-    files: ['*.config.js', '.stylelintrc.cjs', '.*rc.js'],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
+    name: 'vs-piclist/esm',
+    files: ['**/*.{js,mjs,mts}'],
+    rules: {
+      'no-restricted-globals': ['error', '__filename', '__dirname', 'require', 'module', 'exports'],
     },
   },
-  configPrettier,
+  {
+    name: 'vs-piclist/json',
+    files: ['**/*.json', '**/.prettierrc'],
+    ignores: jsoncFiles,
+    extends: [jsonc.configs['recommended-with-json'], jsonc.configs.prettier],
+    language: 'jsonc/json',
+  },
+  {
+    name: 'vs-piclist/jsonc',
+    files: jsoncFiles,
+    extends: [jsonc.configs['recommended-with-jsonc'], jsonc.configs.prettier],
+    language: 'jsonc/jsonc',
+  },
+  {
+    name: 'vs-piclist/json5',
+    files: ['**/*.json5'],
+    extends: [jsonc.configs['recommended-with-json5'], jsonc.configs.prettier],
+    language: 'jsonc/json5',
+  },
+  {
+    files: ['tsconfig.json'],
+    rules: {
+      'jsonc/sort-keys': ['error', 'asc', { caseSensitive: false, natural: true }],
+    },
+  },
+  // Keep Prettier last so it disables conflicting formatting rules.
   pluginPrettier,
 )

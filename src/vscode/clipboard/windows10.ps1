@@ -9,7 +9,7 @@ Add-Type -Assembly PresentationCore
 function main {
     $img = [Windows.Clipboard]::GetImage()
 
-    if ($img -eq $null) {
+    if ($null -eq $img) {
         "no image"
         Exit 1
     }
@@ -35,7 +35,7 @@ function main {
 try {
     # For WIN10
     $file = Get-Clipboard -Format FileDropList
-    if ($file -ne $null) {
+    if ($null -ne $file) {
         Convert-Path $file
         Exit 1
     }
