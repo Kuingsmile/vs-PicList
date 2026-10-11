@@ -36,6 +36,8 @@
     "package": "pnpm run typecheck && rolldown -c --minify --sourcemap hidden",
     "prepare": "husky",
     "release": "bump-version",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
     "vscode:prepublish": "pnpm run package",
@@ -93,6 +95,21 @@
           "default": "http://127.0.0.1:36677/delete",
           "markdownDescription": "%config.deleteAPIUrl.description%"
         },
+        "piclist.serverKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.serverKey.description%"
+        },
+        "piclist.picbed": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.picbed.description%"
+        },
+        "piclist.configName": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.configName.description%"
+        },
         "piclist.copyType": {
           "type": "string",
           "default": "markdown",
@@ -131,6 +148,16 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%config.enableDragUpload.description%"
+        },
+        "piclist.enablePasteUpload": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%config.enablePasteUpload.description%"
+        },
+        "piclist.skipRemoteImages": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%config.skipRemoteImages.description%"
         }
       }
     },
@@ -155,11 +182,18 @@
       "editor/context": [
         {
           "command": "piclist.deleteImage",
-          "when": "editorTextFocus"
+          "when": "editorTextFocus && !editorReadonly"
         },
         {
           "command": "piclist.uploadSelectedImg",
-          "when": "editorTextFocus"
+          "when": "editorTextFocus && !editorReadonly"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "piclist.uploadFromExplorer",
+          "when": "!explorerResourceIsFolder && resourceExtname =~ /^\\.(png|jpe?g|jfif|webp|gif|bmp|tiff?|ico|svg|avif|heic|heif)$/i",
+          "group": "7_modification"
         }
       ]
     }
@@ -176,16 +210,9 @@
       "config": ".cz-config.cjs"
     }
   },
-  "dependencies": {
-    "axios": "^1.20.0",
-    "dayjs": "^1.11.23",
-    "form-data": "^4.0.6",
-    "fs-extra": "^11.4.1"
-  },
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@eslint/js": "^10.0.1",
-    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.20.5",
     "@types/vscode": "~1.100.0",
     "commitizen": "^4.3.2",
@@ -202,7 +229,8 @@
     "prettier": "^3.9.10",
     "rolldown": "1.2.13",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
   },
   "packageManager": "pnpm@10.34.6",
   "engines": {
@@ -217,6 +245,7 @@
     "preset": "emoji"
   },
   "extensionKind": [
-    "ui"
+    "ui",
+    "workspace"
   ]
 }

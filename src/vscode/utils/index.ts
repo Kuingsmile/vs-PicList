@@ -1,7 +1,9 @@
-import vscode, { window } from 'vscode'
+import path from 'node:path'
 
-import { IMessageToShow } from '../../utils'
+import * as vscode from 'vscode'
+
 import { getNLSText } from '../../utils/meta'
+import type { UploadInput } from '../uploader'
 
 export function addPeriod(message: string) {
   return !message.endsWith('.') && !message.endsWith('!') ? message + '.' : message
@@ -11,55 +13,28 @@ export function decorateMessage(message: string): string {
   return `${getNLSText('ext.displayName')}: ${addPeriod(message)}`
 }
 
-export const showWarning = async (message: string) => await window.showWarningMessage(decorateMessage(message))
+export const showWarning = async (message: string) => await vscode.window.showWarningMessage(decorateMessage(message))
 
-export const showError = async (message: string) => await window.showErrorMessage(decorateMessage(message))
+export const showError = async (message: string) => await vscode.window.showErrorMessage(decorateMessage(message))
 
-export const showInfo = async (message: string) =>
-  await window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: 'message',
-      cancellable: false,
-    },
-    async progress => {
-      for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-          progress.report({ increment: i * 10, message })
-        }, 100000)
-      }
-    },
-  )
+export const showInfo = async (message: string) => await vscode.window.showInformationMessage(decorateMessage(message))
 
-export const showMessage = (messageToShow: IMessageToShow) => {
-  switch (messageToShow.type) {
-    case 'warning':
-      showWarning(messageToShow.message)
-      break
-    case 'error':
-      showError(messageToShow.message)
-      break
-    case 'info':
-      showInfo(messageToShow.message)
-      break
-    default:
-  }
+/** Shows an error unless the user cancelled the operation. */
+export function handleError(error: unknown) {
+  if (error instanceof vscode.CancellationError) return
+  showError(error instanceof Error ? error.message : String(error))
 }
 
-export function getRemoteServerMode(): boolean {
-  return vscode.workspace ? vscode.workspace.getConfiguration('piclist').get('remoteServerMode') || false : false
+/** Local files are uploaded by path; files in remote workspaces are read through VS Code. */
+export async function toUploadInput(uri: vscode.Uri): Promise<UploadInput> {
+  if (uri.scheme === 'file') return uri.fsPath
+  return { name: path.posix.basename(uri.path), data: await vscode.workspace.fs.readFile(uri) }
 }
 
-export function getFileName(item: string, selectedText?: string, getFileNameFromRes = false): string {
-  let fileName: string = ''
-  if (selectedText && !getFileNameFromRes) {
-    fileName = selectedText
-  } else {
-    try {
-      const url = new URL(item)
-      const pathSep = url.pathname.includes('/') ? '/' : '\\'
-      fileName = decodeURIComponent(url.pathname.split(pathSep).pop() || '') || ''
-    } catch (_e) {}
+export async function isFile(uri: vscode.Uri): Promise<boolean> {
+  try {
+    return ((await vscode.workspace.fs.stat(uri)).type & vscode.FileType.File) !== 0
+  } catch {
+    return false
   }
-  return fileName || ''
 }

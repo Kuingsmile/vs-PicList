@@ -25,12 +25,15 @@ While alternatives like [vs-picgo](https://github.com/PicGo/vs-picgo) exist (bas
 
 - **Easy Uploads**: Upload images to your preferred hosting service in just a few clicks.
 - **Drag-and-Drop Support**: Drag images from your file explorer directly into your editor to upload.
-- **Upload All Images**: Upload every image in the current file.
-- **Upload Selected Images**: Right-click to upload only selected images.
+- **Paste to Upload**: Paste screenshots or image files into the editor to upload them (enable `piclist.enablePasteUpload`).
+- **Upload from the Explorer**: Right-click image files in the VS Code explorer to upload them.
+- **Upload All Images**: Upload every image in the current file. Only the image URLs are replaced, so alt text, titles, and HTML attributes are kept. Images in code blocks and links to web pages are left alone.
+- **Upload Selected Images**: Right-click to upload only the selected images, or the image at the cursor.
 - **Auto URL Insertion**: Automatically insert image URLs into your file after upload.
 - **Image Management**: Delete images from your remote hosting service directly within VSCode.
 - **Advanced Processing**: Supports image compression, watermarking, and more.
 - **Remote Server Mode**: Upload via PicList or PicList-Core running on a remote server.
+- **Remote Development**: Works in Remote-SSH, WSL, Dev Containers, and code-server.
 
 ### Demo
 
@@ -81,6 +84,16 @@ The PicList upload API endpoint. Default: `http://127.0.0.1:36677/upload`. See [
 
 The PicList delete API endpoint. Default: `http://127.0.0.1:36677/delete`. See [PicList Server](https://piclist.cn/en/advanced.html#use-of-built-in-server).
 
+### Server Key
+
+The server key set in PicList, or passed to PicList-Core with `picgo-server -k <key>`. It is sent as the `key` query
+parameter. PicList only checks it for requests from other machines. Default: empty.
+
+### Picbed and Config Name
+
+Upload to a specific image host and configuration instead of PicList's defaults, for example `aws-s3` and
+`piclist-test`. Set them in workspace settings to use a different image host for each project. Default: empty.
+
 ### Copy Type
 
 Default: markdown.
@@ -95,7 +108,7 @@ Default: markdown.
 
 ### Custom Type
 
-Default: `![$filename]($url)`.
+Default: `![$fileName]($url)`. Placeholders: `$fileName`, `$url`.
 
 ### Encode URL
 
@@ -105,9 +118,38 @@ Whether to encode the URL when inserting text. Default: `false`.
 
 Enable or disable upload on drag-and-drop. Default: `true`.
 
+### Enable Upload on Paste
+
+Upload images pasted into the editor, such as screenshots or copied image files, instead of using VS Code's default
+paste. When the clipboard also holds text, as it does when copying from Word or Excel, the text is still pasted by
+default. Default: `false`.
+
+When this setting is off, you can still upload a single paste with a keybinding:
+
+```json
+{
+  "key": "ctrl+alt+v",
+  "command": "editor.action.pasteAs",
+  "args": { "kind": "piclist.upload" },
+  "when": "editorTextFocus"
+}
+```
+
+### Skip Remote Images
+
+When uploading all or selected images, skip images that already have an `http(s)` URL and upload only local images.
+When off, remote images are uploaded again to your image host. Default: `false`.
+
 ### Remote Server Mode
 
 Enable when using PicList or PicList-Core on a remote server. Uploads will be sent as files.
+
+## Remote Development
+
+With Remote-SSH, WSL, or Dev Containers, the extension runs on your local machine and talks to your local PicList.
+In browser-based setups such as code-server, it runs on the server, so the API URLs must point to a PicList server
+reachable from there. The clipboard command cannot read your computer's clipboard in that case, so use paste or
+drag-and-drop to upload images from your computer.
 
 ## Development
 
@@ -120,6 +162,7 @@ pnpm install --frozen-lockfile
 pnpm typecheck
 pnpm lint
 pnpm format:check
+pnpm test
 pnpm compile
 pnpm package
 ```

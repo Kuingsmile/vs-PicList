@@ -11,6 +11,9 @@
   "config.title": "PicList",
   "config.uploadAPIUrl.description": "Upload API endpoint. Default: `http://127.0.0.1:36677/upload`",
   "config.deleteAPIUrl.description": "Delete API endpoint. Default: `http://127.0.0.1:36677/delete`",
+  "config.serverKey.description": "Server key of PicList, or of PicList-Core started with `-k`, sent as the `key` query parameter. Only needed when the server runs on another machine.",
+  "config.picbed.description": "Image host to upload to instead of PicList's default, such as `github` or `aws-s3`. Leave empty to use the default.",
+  "config.configName.description": "Name of the image host configuration to use with `#piclist.picbed#`. Leave empty to use the default configuration.",
   "config.copyType.markdown": "Markdown: ![alt](url)",
   "config.copyType.html": "HTML: <img src=\"url\" alt=\"alt\" />",
   "config.copyType.url": "URL: url",
@@ -20,5 +23,7 @@
   "config.customType.description": "Custom copy format. Default: `Markdown: ![$fileName]($url)`. Placeholders: `$fileName`, `$url`.",
   "config.encodeUrl.description": "Encode the copied URL before output. Default: `false`.",
   "config.remoteServerMode.description": "Enable uploads through a remote server. Default: `false`.",
-  "config.enableDragUpload.description": "Enable drag-and-drop uploads. Default: `true`."
+  "config.enableDragUpload.description": "Enable drag-and-drop uploads. Default: `true`.",
+  "config.enablePasteUpload.description": "Upload images pasted into the editor, such as screenshots, and insert the result. When disabled, you can still upload a single paste by running `editor.action.pasteAs` with the argument `{ \"kind\": \"piclist.upload\" }`, for example from a keybinding. Default: `false`.",
+  "config.skipRemoteImages.description": "When uploading all or selected images, skip images that already have an `http(s)` URL and upload only local images. Default: `false`."
 }

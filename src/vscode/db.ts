@@ -1,7 +1,7 @@
+import fs from 'node:fs'
 import path from 'node:path'
 
-import fs from 'fs-extra'
-
+import { formatTimestamp, isSameUrl } from '../utils'
 import { getAppDataPath } from './utils/appDataPath'
 
 export type IStringKeyObject = Record<string, any>
@@ -12,7 +12,7 @@ export class DataStore {
 
   get appDataPath() {
     const dir = getAppDataPath('vs-piclist')
-    fs.ensureDirSync(dir)
+    fs.mkdirSync(dir, { recursive: true })
     return dir
   }
 
@@ -21,38 +21,50 @@ export class DataStore {
   }
 
   static writeUploadedFileDB(data: IStringKeyObject[]) {
+    if (!data.length) return
     try {
-      const originData = DataStore.readUploadedFileDB() || []
-      const newData = [...originData, ...data]
-      fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, newData)
+      DataStore.save([...DataStore.readUploadedFileDB(), ...data])
     } catch (error) {
       console.error(error)
     }
   }
 
   static readUploadedFileDB(): IStringKeyObject[] {
+    const filePath = DataStore.dataStore.conUploadedFileDBPath
+    let content: string
     try {
-      fs.ensureFileSync(DataStore.dataStore.conUploadedFileDBPath)
-      return fs.readJSONSync(DataStore.dataStore.conUploadedFileDBPath)
-    } catch (error) {
-      console.error(error)
+      content = fs.readFileSync(filePath, 'utf8')
+    } catch {
       return []
     }
+    if (!content.trim()) return []
+    try {
+      const data = JSON.parse(content)
+      if (Array.isArray(data)) return data
+    } catch {}
+    // Set unreadable history aside so the next write does not overwrite it.
+    try {
+      fs.renameSync(filePath, `${filePath}.${formatTimestamp()}.bak`)
+    } catch (error) {
+      console.error(error)
+    }
+    return []
   }
 
   static searchUploadedFileDB(urls: string[]): IStringKeyObject[] {
     const data = DataStore.readUploadedFileDB()
-    return urls
-      .map(url => data.find(item => item.imgUrl === url || decodeURI(item.imgUrl) === url))
-      .filter(Boolean) as IStringKeyObject[]
+    const items = urls
+      .map(url => data.find(item => typeof item.imgUrl === 'string' && isSameUrl(item.imgUrl, url)))
+      .filter(item => item !== undefined)
+    return [...new Set(items)]
   }
 
-  static removeUploadedFileDBItem(items: IStringKeyObject[]) {
+  static removeUploadedFileDBItem(ids: ReadonlySet<string>) {
     const data = DataStore.readUploadedFileDB()
-    for (const item of items) {
-      const index = data.findIndex((i: IStringKeyObject) => i.id === item.id)
-      if (index !== -1) data.splice(index, 1)
-    }
-    fs.writeJSONSync(DataStore.dataStore.conUploadedFileDBPath, data)
+    DataStore.save(data.filter(item => !ids.has(String(item.id))))
+  }
+
+  private static save(data: IStringKeyObject[]) {
+    fs.writeFileSync(DataStore.dataStore.conUploadedFileDBPath, JSON.stringify(data))
   }
 }

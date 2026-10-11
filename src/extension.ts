@@ -1,61 +1,39 @@
 import * as vscode from 'vscode'
 
-import { extractUrl } from './utils'
 import { Commands } from './vscode/commands'
-import { DataStore } from './vscode/db'
 import { UploadonDropProvider } from './vscode/dropProvider'
+import { UploadOnPasteProvider } from './vscode/pasteProvider'
 
-export async function activate(context: vscode.ExtensionContext) {
-  const selector: vscode.DocumentSelector = {
-    language: '*',
-    scheme: 'file',
-  }
-  const disposable = [
-    vscode.commands.registerCommand(
-      'piclist.uploadFromClipboard',
-      async () => await Commands.commandManager.uploadImageFromClipboard(),
-    ),
-    vscode.commands.registerCommand(
-      'piclist.uploadFromExplorer',
-      async () => await Commands.commandManager.uploadImageFromExplorer(),
-    ),
-    vscode.commands.registerCommand('piclist.openImageDB', async () => await Commands.commandManager.openImageDB()),
-    vscode.commands.registerCommand(
-      'piclist.uploadFromInputBox',
-      async () => await Commands.commandManager.uploadImageFromInputBox(),
-    ),
-    vscode.commands.registerCommand('piclist.deleteImage', async () => {
-      const editor = vscode.window.activeTextEditor
-
-      if (editor) {
-        const document = editor.document
-        const selection = editor.selection
-        const text = document.getText(selection)
-        const extractedURL = extractUrl(text)
-        if (extractedURL) {
-          const res = DataStore.searchUploadedFileDB(extractedURL)
-          const result = await Commands.commandManager.DeleteImage(res)
-          if (result) {
-            editor.edit(editBuilder => {
-              editBuilder.delete(selection)
-            })
-          } else {
-            vscode.window.showErrorMessage('Delete failed.')
-          }
-        }
-      }
-    }),
-    vscode.commands.registerCommand('piclist.uploadSelectedImg', async () => {
-      await Commands.commandManager.uploadSelectedImg()
-    }),
-    vscode.commands.registerCommand('piclist.uploadAllImgInFile', async () => {
-      await Commands.commandManager.uploadAllImgInFile()
-    }),
+export function activate(context: vscode.ExtensionContext) {
+  // Exact schemes rank these providers ahead of the built-in Markdown ones, so uploading is the default action.
+  const selector: vscode.DocumentSelector = [
+    { scheme: 'file' },
+    { scheme: 'untitled' },
+    { scheme: 'vscode-remote' },
+    { scheme: 'vscode-notebook-cell' },
   ]
-  context.subscriptions.push(...disposable)
-  context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider(selector, new UploadonDropProvider()))
-
-  return context
+  const commands = Commands.commandManager
+  context.subscriptions.push(
+    vscode.commands.registerCommand('piclist.uploadFromClipboard', () => commands.uploadImageFromClipboard()),
+    vscode.commands.registerCommand('piclist.uploadFromExplorer', (uri?: vscode.Uri, uris?: vscode.Uri[]) =>
+      commands.uploadImageFromExplorer(uri, uris),
+    ),
+    vscode.commands.registerCommand('piclist.openImageDB', () => commands.openImageDB()),
+    vscode.commands.registerCommand('piclist.uploadFromInputBox', () => commands.uploadImageFromInputBox()),
+    vscode.commands.registerCommand('piclist.deleteImage', () => commands.deleteImage()),
+    vscode.commands.registerCommand('piclist.uploadSelectedImg', () => commands.uploadSelectedImg()),
+    vscode.commands.registerCommand('piclist.uploadAllImgInFile', () => commands.uploadAllImgInFile()),
+    vscode.languages.registerDocumentDropEditProvider(
+      selector,
+      new UploadonDropProvider(),
+      UploadonDropProvider.metadata,
+    ),
+    vscode.languages.registerDocumentPasteEditProvider(
+      selector,
+      new UploadOnPasteProvider(),
+      UploadOnPasteProvider.metadata,
+    ),
+  )
 }
 
 export function deactivate() {}

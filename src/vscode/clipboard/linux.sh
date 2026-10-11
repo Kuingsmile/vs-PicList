@@ -1,5 +1,14 @@
 #!/bin/sh
-if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+sessionType="$XDG_SESSION_TYPE"
+# XDG_SESSION_TYPE is missing in some environments, so fall back to the display variables.
+if [ "$sessionType" != "x11" ] && [ "$sessionType" != "wayland" ]; then
+  if [ -n "$WAYLAND_DISPLAY" ]; then
+    sessionType="wayland"
+  elif [ -n "$DISPLAY" ]; then
+    sessionType="x11"
+  fi
+fi
+if [ "$sessionType" = "x11" ]; then
   # require xclip(see http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script/677212#677212)
   command -v xclip >/dev/null 2>&1 || { echo >&1 "no xclip"; exit 1; }
   # write image in clipboard to file (see http://unix.stackexchange.com/questions/145131/copy-image-from-clipboard-to-file)
@@ -16,7 +25,7 @@ if [ "$XDG_SESSION_TYPE" = "x11" ]; then
   else
     printf '%s\n' "$filePath"
   fi
-elif [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+elif [ "$sessionType" = "wayland" ]; then
   command -v wl-paste >/dev/null 2>&1 || { echo >&1 "no wl-clipboard"; exit 1; }
   isImage=`wl-paste --list-types | grep image`
   if [ -n "$isImage" ]; then
