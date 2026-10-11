@@ -27,18 +27,18 @@
   "type": "module",
   "main": "./dist/extension.js",
   "scripts": {
-    "compile": "yarn run typecheck && rolldown -c",
+    "compile": "pnpm run typecheck && rolldown -c",
     "cz": "git-cz",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "package": "yarn run typecheck && rolldown -c --minify --sourcemap hidden",
+    "package": "pnpm run typecheck && rolldown -c --minify --sourcemap hidden",
     "prepare": "husky",
     "release": "bump-version",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
-    "vscode:prepublish": "yarn run package",
+    "vscode:prepublish": "pnpm run package",
     "watch": "rolldown -c --watch"
   },
   "contributes": {
@@ -204,10 +204,13 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.1"
   },
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "pnpm@10.34.6",
   "engines": {
     "node": "^22.13.0 || >=24.0.0",
     "vscode": "^1.100.0"
+  },
+  "vsce": {
+    "dependencies": false
   },
   "icon": "logo.png",
   "bumpVersion": {

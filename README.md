@@ -111,21 +111,26 @@ Enable when using PicList or PicList-Core on a remote server. Uploads will be se
 
 ## Development
 
-Use Node.js 22.13 or later in the 22.x line, or Node.js 24+, with Yarn 1.22.22.
+Use Node.js 22.13 or later in the 22.x line, or Node.js 24+, with pnpm 10.34.6.
+Install [pnpm](https://pnpm.io/10.x/installation), or enable it with `corepack enable pnpm` if Corepack is available.
+The `packageManager` field pins the pnpm version.
 
 ```sh
-yarn install
-yarn typecheck
-yarn lint
-yarn format:check
-yarn compile
-yarn package
+pnpm install --frozen-lockfile
+pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm compile
+pnpm package
 ```
 
-Rolldown bundles the extension and its clipboard scripts into `dist/extension.js`. `yarn compile` includes a source map;
-`yarn package` minifies the bundle and generates a hidden source map. Both commands check TypeScript before building.
+Rolldown bundles the extension and its clipboard scripts into `dist/extension.js`. `pnpm compile` includes a source map;
+`pnpm package` minifies the bundle and generates a hidden source map. Both commands check TypeScript before building.
 
-Press F5 in VS Code to build and debug the extension. The default build task runs `yarn watch` and `yarn typecheck:watch`
+Create a VSIX with `pnpm dlx @vscode/vsce package`. The `vsce.dependencies` setting disables dependency scanning because
+all runtime dependencies are bundled.
+
+Press F5 in VS Code to build and debug the extension. The default build task runs `pnpm watch` and `pnpm typecheck:watch`
 together so changes are bundled and checked as you work.
 
 ## Contributors

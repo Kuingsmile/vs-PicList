@@ -4,4 +4,4 @@ out/
 coverage/
 release/
 .vscode-test/
-yarn.lock
+pnpm-lock.yaml

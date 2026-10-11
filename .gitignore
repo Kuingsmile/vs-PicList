@@ -1,9 +1,10 @@
 node_modules/
+.pnpm-store/
 out
 .vscode-test/
 *.vsix
 .imgs
-yarn-error.log
+pnpm-debug.log*
 package-lock.json
 coverage
 .coveralls.yml

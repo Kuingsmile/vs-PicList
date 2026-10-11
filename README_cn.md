@@ -111,21 +111,25 @@ PicList 删除接口，默认：`http://127.0.0.1:36677/delete`。详见 [PicLis
 
 ### 开发
 
-使用 Node.js 22.13 或更高版本（22.x 系列），或 Node.js 24+，并配合 Yarn 1.22.22。
+使用 Node.js 22.13 或更高版本（22.x 系列），或 Node.js 24+，并配合 pnpm 10.34.6。
+安装 [pnpm](https://pnpm.io/10.x/installation)，或在 Corepack 可用时运行 `corepack enable pnpm`。
+`packageManager` 字段会固定 pnpm 版本。
 
 ```sh
-yarn install
-yarn typecheck
-yarn lint
-yarn format:check
-yarn compile
-yarn package
+pnpm install --frozen-lockfile
+pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm compile
+pnpm package
 ```
 
-Rolldown 会将扩展及其剪贴板脚本打包到 `dist/extension.js` 中。`yarn compile` 包含源映射；
-`yarn package` 会压缩包并生成隐藏的源映射。两个命令在构建前都会检查 TypeScript。
+Rolldown 会将扩展及其剪贴板脚本打包到 `dist/extension.js` 中。`pnpm compile` 包含源映射；
+`pnpm package` 会压缩包并生成隐藏的源映射。两个命令在构建前都会检查 TypeScript。
 
-在 VS Code 中按 F5 构建并调试扩展。默认的构建任务会同时运行 `yarn watch` 和 `yarn typecheck:watch`，
+运行 `pnpm dlx @vscode/vsce package` 生成 VSIX。由于所有运行时依赖都已打包，`vsce.dependencies` 设置会禁用依赖扫描。
+
+在 VS Code 中按 F5 构建并调试扩展。默认的构建任务会同时运行 `pnpm watch` 和 `pnpm typecheck:watch`，
 这样在你工作时更改会被打包并检查。
 
 ## 作者

@@ -49,7 +49,7 @@
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "js/ts.tsc.autoDetect": "off",
   "js/ts.updateImportsOnFileMove.enabled": "always",
-  "npm.packageManager": "yarn",
+  "npm.packageManager": "pnpm",
   "prettier.requireConfig": true,
   "search.exclude": {
     "**/coverage": true,
